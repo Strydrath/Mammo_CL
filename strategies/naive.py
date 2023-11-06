@@ -12,10 +12,6 @@ class NaiveStrategy(ContinualLearningStrategy):
             self.model.set_weights(weights)
             history = self.model.fit(dataset.x_train,dataset.y_train, validation_data=(dataset.x_test, dataset.y_test), verbose=1, batch_size=batch_size, epochs=10)
             self.plot_acc_loss(history.history)
-
-
-        pass
-
     def evaluate(self, model, test_loader):
         # Implement naive evaluation strategy here
         pass

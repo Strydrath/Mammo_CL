@@ -81,6 +81,7 @@ def basic_preparation(folder):
   print(f"Number of all images: {len(files_labels)}")
   x, y = prepare_X_y(files_paths,files_labels)
   return x, y, labels
+
 def prepare_data(folder, categorical = False, test_size = 0.3):
 
   x, y, labels = basic_preparation(folder)
