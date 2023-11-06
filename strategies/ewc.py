@@ -1,6 +1,9 @@
+from copy import deepcopy
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import sparse_categorical_crossentropy
 from tensorflow.keras import layers
 from strategies.strategy import ContinualLearningStrategy
 
@@ -17,47 +20,108 @@ class EWCStrategy(ContinualLearningStrategy):
                 self.prev_params[weight.name] = weight.numpy()
         self.lambda_ = lambda_
 
-    def compute_fisher(self, data_loader):
-        for weight in self.fisher:
-            self.fisher[weight].assign(tf.zeros_like(self.fisher[weight]))
-        for inputs, targets in data_loader:
-            outputs = self.model(inputs, training=False)
-            loss = tf.keras.losses.sparse_categorical_crossentropy(targets, outputs)
-            grads = tf.gradients(loss, self.model.trainable_weights)
-            for weight, grad in zip(self.model.trainable_weights, grads):
-                self.fisher[weight.name].assign_add(tf.square(grad) / len(data_loader))
+    def train_epoch(self, train_data, batch_size):
+        dataset = tf.data.Dataset.from_tensor_slices(train_data)
+        dataset = dataset.shuffle(len(train_data[0])).batch(batch_size)
 
-    def update_prev_params(self):
-        for layer in self.model.layers:
-            for weight in layer.weights:
-                self.prev_params[weight.name] = weight.numpy()
-
-    def compute_reg(self):
-        reg = 0
-        for weight in self.model.trainable_weights:
-            reg += tf.reduce_sum(self.fisher[weight.name] * tf.square(weight - self.prev_params[weight.name]))
-        return self.lambda_ * reg
-
-    def train(self, data_loader):
-        total_loss = 0
-        for inputs, targets in data_loader:
+        for inputs, labels in dataset:
             with tf.GradientTape() as tape:
-                outputs = self.model(inputs, training=True)
-                loss = tf.keras.losses.sparse_categorical_crossentropy(targets, outputs)
-                loss += self.compute_reg()
-            grads = tape.gradient(loss, self.model.trainable_weights)
-            self.opt.apply_gradients(zip(grads, self.model.trainable_weights))
-            total_loss += loss.numpy().mean() * inputs.shape[0]
-        self.update_prev_params()
-        return total_loss / len(data_loader)
+                outputs = self.model(inputs)
+                loss = self.model.compiled_loss(labels, outputs)
+
+            gradients = tape.gradient(loss, self.model.trainable_weights)
+            self.model.optimizer.apply_gradients(zip(gradients, self.model.trainable_weights))
+        return loss
+    
+    def report(self, epoch, dataset, batch_size):
+        loss, accuracy = self.model.evaluate(dataset.x_train, dataset.y_train, verbose=0,
+                                    batch_size=batch_size)
+        loss2, accuracy2 = self.model.evaluate(dataset.x_test, dataset.y_test, verbose=0,
+                                    batch_size=batch_size)
+        print("Epoch: ",epoch + 1, "Train Set:  Accuracy: ","{:.4f}".format(accuracy),
+            "Loss: ","{:.4f}".format(loss), "Validation Set: Accuracy: ",
+            "{:.4f}".format(accuracy2), "Loss: ", "{:.4f}".format(loss2))
+        return (accuracy,loss, accuracy2 ,loss2)
+
+    def compile_model(model, learning_rate, regularisers=None):
+        def custom_loss(y_true, y_pred):
+            loss = sparse_categorical_crossentropy(y_true, y_pred)
+            if regularisers is not None:
+                for fun in regularisers:
+                    loss += fun(model)
+            return loss
+        model.compile(
+            loss=custom_loss,
+            optimizer=Adam(learning_rate=learning_rate),
+            metrics=["accuracy"]
+        )
+    def fisher_matrix(self, dataset, samples):
+        inputs, labels = dataset
+        weights = self.model.trainable_weights
+        variance = [tf.zeros_like(tensor) for tensor in weights]
+
+        for _ in range(samples):
+            index = np.random.randint(len(inputs))
+            data = inputs[index]
+            data = tf.expand_dims(data, axis=0)
+
+            with tf.GradientTape() as tape:
+                output = self.model(data)
+                log_likelihood = tf.math.log(output)
+
+            gradients = tape.gradient(log_likelihood, weights)
+
+            variance = [var + (grad ** 2) for var, grad in zip(variance, gradients)]
+
+        fisher_diagonal = [tensor / samples for tensor in variance]
+        return fisher_diagonal
+
+
+    def ewc_loss(self, lam, dataset, samples):
+        optimal_weights = deepcopy(self.model.trainable_weights)
+        fisher_diagonal = self.fisher_matrix(self.model, dataset, samples)
+
+        def loss_fn(new_model):
+            # sum [(lambda / 2) * F * (current weights - optimal weights)^2]
+            loss = 0
+            current = new_model.trainable_weights
+            for f, c, o in zip(fisher_diagonal, current, optimal_weights):
+                loss += tf.reduce_sum(f * ((c - o) ** 2))
+
+            return loss * (lam / 2)
+
+        return loss_fn
+
+    def train(self, datasets, learning_rate = 0.001, epochs = 10, batch_size = 32, ewc_lambda = 1, ewc_samples = 100):
+        self.compile_model(self.model, learning_rate)
+        regularisers = []
+        histories = []
+
+        for dataset in datasets:
+            history = {
+                'accuracy': [],
+                'val_accuracy': [],
+                'loss': [],
+                'val_loss': []
+            }
+            inputs, labels = dataset.x_train, dataset.y_train
+
+            for epoch in range(epochs):
+                loss = self.train_epoch((inputs, labels), batch_size)
+                acc,loss, val_acc, val_loss = self.report( epoch, dataset, batch_size)
+                history['loss'].append(loss)
+                history['accuracy'].append(acc)
+                history['val_accuracy'].append(val_acc)
+                history['val_loss'].append(val_loss)
+            histories.append(history)
+            regularisers.append(self.ewc_loss(ewc_lambda, (inputs, labels),ewc_samples))
+            self.compile_model(self.model, learning_rate, regularisers=regularisers)
+        for history in histories:
+            self.plot_acc_loss(history)
+        return (histories,self.model)
 
     def evaluate(self, data_loader):
-        total_correct = 0
-        for inputs, targets in data_loader:
-            outputs = self.model(inputs, training=False)
-            predicted = tf.argmax(outputs, axis=1)
-            total_correct += tf.reduce_sum(tf.cast(predicted == targets, tf.float32)).numpy()
-        return total_correct / len(data_loader)
+        pass
 
     def save_model(self, filepath):
         self.model.save(filepath)

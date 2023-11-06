@@ -72,10 +72,10 @@ class SynapticIntelligence(ContinualLearningStrategy):
     def __init__(self, model):
         super().__init__(model)
     
-    def train(optimizer, datasets, num_epochs, lr = 0.001, batch_size=32):
+    def train(self, optimizer, datasets, num_epochs, lr = 0.001, batch_size=32):
         loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
         start_time = time.time()
-        val_beat_counts = 0  # number of time val accuracy not imporved
+        val_beat_counts = 0 
         best_acc = 0.0
         model = self.model
         model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
