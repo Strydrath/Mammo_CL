@@ -7,7 +7,7 @@ from models.TorchCNN import TorchCNN
 from Trainer import Trainer
 import torch
 from loader import get_datasets
-
+#kocham pieski
 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
