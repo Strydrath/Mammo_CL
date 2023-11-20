@@ -8,17 +8,8 @@ from tensorflow.keras import layers
 from strategies.strategy import ContinualLearningStrategy
 
 class EWCStrategy(ContinualLearningStrategy):
-    def __init__(self, model, lambda_, opt):
-        super().__init__(model, opt)
-        self.fisher = {}
-        for layer in self.model.layers:
-            for weight in layer.weights:
-                self.fisher[weight.name] = tf.zeros_like(weight)
-        self.prev_params = {}
-        for layer in self.model.layers:
-            for weight in layer.weights:
-                self.prev_params[weight.name] = weight.numpy()
-        self.lambda_ = lambda_
+    def __init__(self, model):
+        super().__init__(model)
 
     def train_epoch(self, train_data, batch_size):
         dataset = tf.data.Dataset.from_tensor_slices(train_data)
@@ -43,14 +34,14 @@ class EWCStrategy(ContinualLearningStrategy):
             "{:.4f}".format(accuracy2), "Loss: ", "{:.4f}".format(loss2))
         return (accuracy,loss, accuracy2 ,loss2)
 
-    def compile_model(model, learning_rate, regularisers=None):
+    def compile_model(self,model, learning_rate, regularisers=None):
         def custom_loss(y_true, y_pred):
             loss = sparse_categorical_crossentropy(y_true, y_pred)
             if regularisers is not None:
                 for fun in regularisers:
                     loss += fun(model)
             return loss
-        model.compile(
+        self.model.compile(
             loss=custom_loss,
             optimizer=Adam(learning_rate=learning_rate),
             metrics=["accuracy"]
