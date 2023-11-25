@@ -7,6 +7,7 @@ from torch.optim import Adam
 from torch.nn import CrossEntropyLoss
 from models.TorchCNN import TorchCNN
 import torch
+from loader import get_datasets
 
 
 def parseOptimizer(model, optimizer):
