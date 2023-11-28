@@ -1,0 +1,127 @@
+#pip install colorama
+#pip install pydicom
+
+import pandas as pd
+import numpy as np
+import os
+import shutil
+from glob import glob
+from tqdm import tqdm
+import cv2
+import matplotlib.pyplot as plt
+import seaborn as sns
+from colorama import Fore, Back, Style
+from PIL import Image
+from pydicom import dcmread
+from pydicom.dataset import FileDataset
+from skimage import measure
+from pydicom.pixel_data_handlers.util import apply_modality_lut, apply_voi_lut, apply_windowing
+import pydicom
+
+
+dataset_dir = 'F:\federaated\bd\dicom\vindr-mammo-a-large-scale-benchmark-dataset-for-computer-aided-detection-and-diagnosis-in-full-field-digital-mammography-1.0.0\images'
+df = pd.read_csv('F:\federaated\bd\dicom\vindr-mammo-a-large-scale-benchmark-dataset-for-computer-aided-detection-and-diagnosis-in-full-field-digital-mammography-1.0.0\breast-level_annotations.csv')
+
+def build_path(folder, file, parent=dataset_dir):
+    return dataset_dir+"/"+folder+"/"+file+".dicom"
+
+df['image_path'] = df.apply(lambda x: build_path(x.study_id, x.image_id), axis=1)
+
+df = pd.read_csv(f'F:\federaated\bd\dicom\vindr-mammo-a-large-scale-benchmark-dataset-for-computer-aided-detection-and-diagnosis-in-full-field-digital-mammography-1.0.0\finding_annotations.csv')
+df.head()
+
+def load_image_pydicom(img_path, voi_lut=False):
+    dataset = pydicom.dcmread(img_path)
+    img = dataset.pixel_array
+
+    if dataset.PhotometricInterpretation == "MONOCHROME1":
+       img = apply_voi_lut(img, dataset, prefer_lut = True)
+       img = np.amax(img) - img
+
+    if dataset.PhotometricInterpretation=="MONOCHROME2":
+        img = apply_voi_lut(img, dataset, prefer_lut = True)
+        img = apply_windowing(img, dataset)
+
+    return img.astype(np.uint16)
+
+def save_16_bit_png_file(img_data, file_path, debug=False):
+    array_buffer = img_data.tobytes()
+    if debug:
+        print(len(array_buffer))
+        print(img_data.T.shape)
+    img = Image.new("I", img_data.T.shape)
+    img.frombytes(array_buffer, 'raw', "I;16")
+    resize = (256, 256)
+    img = img.resize(resize)
+    arr = np.asarray(img)
+    avg=np.average(arr)
+    binary_image = arr > avg/3
+    labeled_image = measure.label(binary_image)
+    properties = measure.regionprops(labeled_image)
+    region_areas = [prop.area for prop in properties]
+    largest_region_index = np.argmax(region_areas)
+    area_threshold = region_areas[largest_region_index]
+    filtered_image = np.where(labeled_image == largest_region_index + 1, arr, 0)
+    for region_index, region_area in enumerate(region_areas):
+        if region_area < area_threshold:
+            filtered_image[labeled_image == region_index + 1] = 0
+    plt.imsave(file_path, filtered_image, cmap='gray')
+
+    # Get the current directory
+current_directory = os.getcwd()
+
+# Define the source and destination folders
+source_folder = current_directory
+destination_no_cancer_16bit = 'No_Cancer_16bit'
+destination_cancer_16bit = 'Cancer_16bit'
+destination_no_cancer_npz = 'No_Cancer_NPZ'
+destination_cancer_npz = 'Cancer_NPZ'
+
+# Create destination folders if they don't exist
+os.makedirs(destination_no_cancer_16bit, exist_ok=True)
+os.makedirs(destination_cancer_16bit, exist_ok=True)
+os.makedirs(destination_no_cancer_npz, exist_ok=True)
+os.makedirs(destination_cancer_npz, exist_ok=True)
+
+count_no_cancer = 0
+count_cancer = 0
+
+# Iterate through each row in the DataFrame
+for index, row in df.iterrows():
+    study_id = str(row['study_id'])
+    image_id = str(row['image_id'])
+    finding_categories = row['finding_categories']
+
+    # Construct the path to the source DICOM image
+    source_image_path = os.path.join(source_folder, study_id, image_id + '.dicom')
+
+    # Check if the source DICOM image exists
+    if not os.path.isfile(source_image_path):
+        continue
+
+    # Read image
+    img = load_image_pydicom(source_image_path, True)
+
+    # Determine the destination folder based on 'finding_categories'
+    if finding_categories == "['No Finding']":
+        destination_folder_16bit = destination_no_cancer_16bit
+        destination_folder_npz = destination_no_cancer_npz
+        count_no_cancer += 1
+    else:
+        destination_folder_16bit = destination_cancer_16bit
+        destination_folder_npz = destination_cancer_npz
+        count_cancer += 1
+
+    # Construct the path to the destination folder
+    destination_path_16bit = os.path.join(destination_folder_16bit, image_id + '.png')
+    destination_path_npz = os.path.join(destination_folder_npz, image_id)
+
+    # Save the 16bit PNG image to the appropriate folder
+    img_save = save_16_bit_png_file(img, destination_path_16bit)
+
+    # Save the 16bit data in an NPZ file format
+    npz_savez = np.savez(destination_path_npz, img)
+
+print("Images saved successfully.")
+print(f"Saved {count_no_cancer} images without cancer.")
+print(f"Saved {count_cancer} images with cancer.")
