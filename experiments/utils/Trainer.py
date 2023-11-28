@@ -6,7 +6,7 @@ from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
 from torchvision import transforms
 from torchvision.transforms import ToTensor, Resize
-from di_benchmark import di_benchmark
+from utils.di_benchmark import di_benchmark
 from avalanche.benchmarks import SplitCIFAR10
 from avalanche.benchmarks.generators import ni_benchmark
 from avalanche.training.utils import adapt_classification_layer
