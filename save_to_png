@@ -1,5 +1,4 @@
-#pip install colorama
-#pip install pydicom
+
 
 import pandas as pd
 import numpy as np
@@ -19,16 +18,16 @@ from pydicom.pixel_data_handlers.util import apply_modality_lut, apply_voi_lut, 
 import pydicom
 
 
-dataset_dir = 'F:\federaated\bd\dicom\vindr-mammo-a-large-scale-benchmark-dataset-for-computer-aided-detection-and-diagnosis-in-full-field-digital-mammography-1.0.0\images'
-df = pd.read_csv('F:\federaated\bd\dicom\vindr-mammo-a-large-scale-benchmark-dataset-for-computer-aided-detection-and-diagnosis-in-full-field-digital-mammography-1.0.0\breast-level_annotations.csv')
+dataset_dir = 'F:\\federaated\\bd\\dicom\\vindr\\images'
 
-def build_path(folder, file, parent=dataset_dir):
-    return dataset_dir+"/"+folder+"/"+file+".dicom"
 
-df['image_path'] = df.apply(lambda x: build_path(x.study_id, x.image_id), axis=1)
+#def build_path(folder, file, parent=dataset_dir):
+ #   return dataset_dir+"/"+folder+"/"+file+".dicom"
+#df['image_path'] = df.apply(lambda x: build_path(x.study_id, x.image_id), axis=1)
 
-df = pd.read_csv(f'F:\federaated\bd\dicom\vindr-mammo-a-large-scale-benchmark-dataset-for-computer-aided-detection-and-diagnosis-in-full-field-digital-mammography-1.0.0\finding_annotations.csv')
-df.head()
+#df = pd.read_csv("F:\\federaated\\bd\\dicom\\vindr\\finding_annotations.csv")
+df = pd.read_csv("C:\\Users\\Radek\\Downloads\\finding_annotations.csv")
+print(df.head(10))
 
 def load_image_pydicom(img_path, voi_lut=False):
     dataset = pydicom.dcmread(img_path)
@@ -71,11 +70,12 @@ def save_16_bit_png_file(img_data, file_path, debug=False):
 current_directory = os.getcwd()
 
 # Define the source and destination folders
-source_folder = current_directory
-destination_no_cancer_16bit = 'No_Cancer_16bit'
-destination_cancer_16bit = 'Cancer_16bit'
-destination_no_cancer_npz = 'No_Cancer_NPZ'
-destination_cancer_npz = 'Cancer_NPZ'
+#source_folder = current_directory
+source_folder = 'F:\\federaated\\bd\\dicom\\vindr\\images'
+destination_no_cancer_16bit = 'F:\\dataset\\No_Cancer'
+destination_cancer_16bit = 'F:\\dataset\\Cancer_16bit'
+destination_no_cancer_npz = 'F:\\dataset\\No_Cancer_NPZ'
+destination_cancer_npz = 'F:\\dataset\\Cancer_NPZ'
 
 # Create destination folders if they don't exist
 os.makedirs(destination_no_cancer_16bit, exist_ok=True)
@@ -94,6 +94,7 @@ for index, row in df.iterrows():
 
     # Construct the path to the source DICOM image
     source_image_path = os.path.join(source_folder, study_id, image_id + '.dicom')
+    
 
     # Check if the source DICOM image exists
     if not os.path.isfile(source_image_path):
