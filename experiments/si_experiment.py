@@ -18,6 +18,7 @@ from avalanche.evaluation.metrics import (
     forgetting_metrics,
     accuracy_metrics,
     loss_metrics,
+    confusion_matrix_metrics
 )
 
 
@@ -38,7 +39,7 @@ model = TorchCNN()
 adapt_classification_layer(model, 2, bias=False)
 
 my_logger = TensorboardLogger(
-    tb_log_dir="logs_example_NAIVE"
+    tb_log_dir="logs_example_SI"
 )
 interactive_logger = InteractiveLogger()
 evaluation_plugin = EvaluationPlugin(
@@ -46,6 +47,7 @@ evaluation_plugin = EvaluationPlugin(
         minibatch=True, epoch=True, experience=True, stream=True
     ),
     loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
+    confusion_matrix_metrics(stream=True),
     forgetting_metrics(experience=True),
     loggers=[my_logger, interactive_logger],
 )

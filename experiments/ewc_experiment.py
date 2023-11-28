@@ -38,7 +38,7 @@ model = TorchCNN()
 adapt_classification_layer(model, 2, bias=False)
 
 my_logger = TensorboardLogger(
-    tb_log_dir="logs_example_NAIVE"
+    tb_log_dir="logs_example_EWC"
 )
 interactive_logger = InteractiveLogger()
 evaluation_plugin = EvaluationPlugin(

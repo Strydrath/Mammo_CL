@@ -18,6 +18,10 @@ from avalanche.evaluation.metrics import (
     forgetting_metrics,
     accuracy_metrics,
     loss_metrics,
+    confusion_matrix_metrics,
+    timing_metrics,
+    ram_usage_metrics
+    
 )
 
 
@@ -42,13 +46,29 @@ my_logger = TensorboardLogger(
 )
 interactive_logger = InteractiveLogger()
 evaluation_plugin = EvaluationPlugin(
-    accuracy_metrics(
-        minibatch=True, epoch=True, experience=True, stream=True
-    ),
-    loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
-    forgetting_metrics(experience=True),
-    loggers=[my_logger, interactive_logger],
-)
+        accuracy_metrics(
+            minibatch=True,
+            epoch=True,
+            epoch_running=True,
+            experience=True,
+            stream=True,
+        ),
+        loss_metrics(
+            minibatch=True,
+            epoch=True,
+            epoch_running=True,
+            experience=True,
+            stream=True,
+        ),
+        forgetting_metrics(experience=True, stream=True),
+        confusion_matrix_metrics(stream=True),
+        timing_metrics(minibatch=True, epoch=True, experience=True, stream=True),
+        ram_usage_metrics(
+            every=0.5, minibatch=True, epoch=True, experience=True, stream=True
+        ),
+        loggers=[interactive_logger, my_logger],
+    )
+
 print("creating strategy object")
 cl_strategy = Naive(
     model,

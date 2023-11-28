@@ -57,7 +57,7 @@ class Trainer:
             self.train_set, self.test_set, n_experiences=len(self.train_set), task_labels=True,train_transform=train_transform, eval_transform=test_transform
         )
         print("Starting experiment...")
-        print(scenario.classes_in_experience)
+        #print(scenario.classes_in_experience)
         adapt_classification_layer(self.model, scenario.n_classes, bias=False)
 
         # CREATE THE STRATEGY INSTANCE (NAIVE with the Synaptic Intelligence plugin)
