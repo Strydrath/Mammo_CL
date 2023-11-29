@@ -68,17 +68,17 @@ class Trainer:
         from tqdm import tqdm
         for i, data in enumerate(tqdm(scenario.test_stream[0].dataset)):
             print(data)
-            print("\nNumber of examples:", i + 1)
+        print("\nNumber of examples:", i + 1)
 
-            for experience in scenario.train_stream:
-                print("Start of experience: ", experience.current_experience)
-                print("Current Classes: ", experience.classes_in_this_experience)
+        for experience in scenario.train_stream:
+            print("Start of experience: ", experience.current_experience)
+            print("Current Classes: ", experience.classes_in_this_experience)
 
-                cl_strategy.train(experience)
-                print("Training completed")
-                cl_strategy.eval(scenario.test_stream)
-                print("Computing accuracy on the whole test set")
-                results.append(scenario.test_stream[0])
+            cl_strategy.train(experience)
+            print("Training completed")
+            cl_strategy.eval(scenario.test_stream)
+            print("Computing accuracy on the whole test set")
+            results.append(scenario.test_stream[0])
         return results
 
 
