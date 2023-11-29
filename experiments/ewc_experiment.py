@@ -11,7 +11,7 @@ from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
 from models.TorchCNN import TorchCNN
 from avalanche.benchmarks.classic import PermutedMNIST
-from avalanche.logging import InteractiveLogger, TensorboardLogger, TextLogger
+from avalanche.logging import InteractiveLogger, TensorboardLogger
 from avalanche.training import EWC
 from utils.Trainer import Trainer
 from avalanche.evaluation.metrics import (
@@ -23,9 +23,9 @@ from avalanche.evaluation.metrics import (
 
 print("Collecting datasets")
 # ZMIENIĆ ŚCIEŻKĘ NA FOLDER Z PIERWSZĄ BAZĄ
-train1, test1 = get_datasets("experiments/data/baza1")
+train1, test1 = get_datasets("F:\\split")
 # ZMIENIĆ ŚCIEŻKĘ NA FOLDER Z DRUGĄ BAZĄ
-train2, test2 = get_datasets("experiments/data/baza2")
+train2, test2 = get_datasets("F:\\data")
 
 train_set = [train1, train2]
 test_set = [test1, test2]
@@ -47,7 +47,7 @@ evaluation_plugin = EvaluationPlugin(
     ),
     loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
     forgetting_metrics(experience=True),
-    loggers=[my_logger, interactive_logger, TextLogger(open('log_ewc.txt', 'a'))],
+    loggers=[my_logger, interactive_logger],
 )
 print("creating strategy object")
 cl_strategy = EWC(
