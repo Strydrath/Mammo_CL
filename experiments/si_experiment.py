@@ -24,9 +24,9 @@ from avalanche.evaluation.metrics import (
 
 print("Collecting datasets")
 # ZMIENIĆ ŚCIEŻKĘ NA FOLDER Z PIERWSZĄ BAZĄ
-train1, test1 = get_datasets("F:\\data")
+train1, test1 = get_datasets("F:\\split")
 # ZMIENIĆ ŚCIEŻKĘ NA FOLDER Z DRUGĄ BAZĄ
-train2, test2 = get_datasets("experiments/data/baza2")
+train2, test2 = get_datasets("F:\\data")
 
 train_set = [train1, train2]
 test_set = [test1, test2]
