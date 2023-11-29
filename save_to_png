@@ -106,22 +106,22 @@ for index, row in df.iterrows():
     # Determine the destination folder based on 'finding_categories'
     if finding_categories == "['No Finding']":
         destination_folder_16bit = destination_no_cancer_16bit
-        destination_folder_npz = destination_no_cancer_npz
+        #destination_folder_npz = destination_no_cancer_npz
         count_no_cancer += 1
     else:
         destination_folder_16bit = destination_cancer_16bit
-        destination_folder_npz = destination_cancer_npz
+        #destination_folder_npz = destination_cancer_npz
         count_cancer += 1
 
     # Construct the path to the destination folder
     destination_path_16bit = os.path.join(destination_folder_16bit, image_id + '.png')
-    destination_path_npz = os.path.join(destination_folder_npz, image_id)
+    #destination_path_npz = os.path.join(destination_folder_npz, image_id)
 
     # Save the 16bit PNG image to the appropriate folder
     img_save = save_16_bit_png_file(img, destination_path_16bit)
 
     # Save the 16bit data in an NPZ file format
-    npz_savez = np.savez(destination_path_npz, img)
+    #npz_savez = np.savez(destination_path_npz, img)
 
 print("Images saved successfully.")
 print(f"Saved {count_no_cancer} images without cancer.")
