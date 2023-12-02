@@ -28,20 +28,55 @@ dataset_dir = 'F:\\federaated\\bd\\dicom\\vindr\\images'
 #df = pd.read_csv("F:\\federaated\\bd\\dicom\\vindr\\finding_annotations.csv")
 df = pd.read_csv("C:\\Users\\Radek\\Downloads\\finding_annotations.csv")
 print(df.head(10))
-
-def load_image_pydicom(img_path, voi_lut=False):
+def load_image_pydicom(img_path, voi_lut=False, modality_lut=False, windowing=False):
     dataset = pydicom.dcmread(img_path)
+    # print(dataset)
+    metadata = retrieve_metadata(dataset)
     img = dataset.pixel_array
-
-    if dataset.PhotometricInterpretation == "MONOCHROME1":
-       img = apply_voi_lut(img, dataset, prefer_lut = True)
-       img = np.amax(img) - img
-
-    if dataset.PhotometricInterpretation=="MONOCHROME2":
-        img = apply_voi_lut(img, dataset, prefer_lut = True)
+    if voi_lut:
+        img = apply_voi_lut(img, dataset)
+    if modality_lut:
+        img = apply_modality_lut(img, dataset)
+    if windowing:
         img = apply_windowing(img, dataset)
+    if dataset.PhotometricInterpretation == "MONOCHROME1":
+        img = np.amax(img) - img
 
-    return img.astype(np.uint16)
+    return img
+
+def retrieve_metadata(metadata):
+
+    data = dict()
+
+    if 'PatientID' in metadata:
+        data['patient_id'] = metadata.PatientID
+    if 'Manufacturer' in metadata:
+        data['manufacturer'] = metadata.Manufacturer
+    if 'PatientAge' in metadata:
+        data['age'] = metadata.PatientAge[:-1]
+    if 'ViewPosition' in metadata:
+        data['view_position'] = metadata.ViewPosition
+    if 'StudyInstanceUID' in metadata:
+        data['study_id'] = metadata.StudyInstanceUID
+    if 'SeriesInstanceUID' in metadata:
+        data['series_id'] = metadata.SeriesInstanceUID
+    if 'ImageLaterality' in metadata:
+        data['laterality'] = metadata.ImageLaterality
+
+    return data    
+#def load_image_pydicom(img_path, voi_lut=False):
+#   dataset = pydicom.dcmread(img_path)
+#    img = dataset.pixel_array
+#
+#    if dataset.PhotometricInterpretation == "MONOCHROME1":
+#       img = apply_voi_lut(img, dataset, prefer_lut = True)
+#       img = np.amax(img) - img
+#
+#    if dataset.PhotometricInterpretation=="MONOCHROME2":
+#        img = apply_voi_lut(img, dataset, prefer_lut = True)
+#        img = apply_windowing(img, dataset)
+
+#    return img.astype(np.uint16)
 
 def save_16_bit_png_file(img_data, file_path, debug=False):
     array_buffer = img_data.tobytes()
@@ -53,18 +88,8 @@ def save_16_bit_png_file(img_data, file_path, debug=False):
     resize = (256, 256)
     img = img.resize(resize)
     arr = np.asarray(img)
-    avg=np.average(arr)
-    binary_image = arr > avg/3
-    labeled_image = measure.label(binary_image)
-    properties = measure.regionprops(labeled_image)
-    region_areas = [prop.area for prop in properties]
-    largest_region_index = np.argmax(region_areas)
-    area_threshold = region_areas[largest_region_index]
-    filtered_image = np.where(labeled_image == largest_region_index + 1, arr, 0)
-    for region_index, region_area in enumerate(region_areas):
-        if region_area < area_threshold:
-            filtered_image[labeled_image == region_index + 1] = 0
-    plt.imsave(file_path, filtered_image, cmap='gray')
+    
+    plt.imsave(file_path, arr, cmap='gray')
 
     # Get the current directory
 current_directory = os.getcwd()
@@ -73,15 +98,15 @@ current_directory = os.getcwd()
 #source_folder = current_directory
 source_folder = 'F:\\federaated\\bd\\dicom\\vindr\\images'
 destination_no_cancer_16bit = 'F:\\dataset\\No_Cancer'
-destination_cancer_16bit = 'F:\\dataset\\Cancer_16bit'
-destination_no_cancer_npz = 'F:\\dataset\\No_Cancer_NPZ'
-destination_cancer_npz = 'F:\\dataset\\Cancer_NPZ'
+destination_cancer_16bit = 'F:\\dataset\\Cancer'
+#destination_no_cancer_npz = 'F:\\dataset\\No_Cancer_NPZ'
+#destination_cancer_npz = 'F:\\dataset\\Cancer_NPZ'
 
 # Create destination folders if they don't exist
 os.makedirs(destination_no_cancer_16bit, exist_ok=True)
 os.makedirs(destination_cancer_16bit, exist_ok=True)
-os.makedirs(destination_no_cancer_npz, exist_ok=True)
-os.makedirs(destination_cancer_npz, exist_ok=True)
+#os.makedirs(destination_no_cancer_npz, exist_ok=True)
+#os.makedirs(destination_cancer_npz, exist_ok=True)
 
 count_no_cancer = 0
 count_cancer = 0
