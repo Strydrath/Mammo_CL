@@ -75,7 +75,7 @@ def train(dataset_folder, name):
 
   history_2= model_2.fit(train_dataset,
                     validation_data= val_dataset,
-                    epochs=2)
+                    epochs=10)
   
   plot_acc_loss(history_2.history, name)
 
