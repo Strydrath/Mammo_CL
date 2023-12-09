@@ -5,6 +5,7 @@ from utils.loader import get_datasets
 import matplotlib.pyplot as plt
 
 def plot_acc_loss(history, name):
+    plt.figure()
     plt.plot(history['accuracy'], label='accuracy')
     plt.plot(history['val_accuracy'], label='val_accuracy')
     plt.legend()
@@ -46,7 +47,7 @@ def loadDatasets(database_folder, name):
 
 def train(dataset_folder, name):
   # Odpowiednio zmienić ścieżki do folderu z bazą
-  database_folder = "experiments/data/baza1"
+  database_folder = "./data/baza1"
   train_dataset, val_dataset = loadDatasets(database_folder, name)
 
   base_model = applications.VGG16(
@@ -79,7 +80,43 @@ def train(dataset_folder, name):
   
   plot_acc_loss(history_2.history, name)
 
+def train_resnet101(database_folder, name):
+  train_dataset, val_dataset = loadDatasets(database_folder, name)
+
+  base_model = applications.ResNet101(
+      include_top=False,
+      weights="imagenet",
+      input_tensor=None,
+      input_shape=(512,512,3),
+      pooling=None,
+      classes=1000,
+      classifier_activation="softmax",
+  )
+
+  base_model.trainable = False
+
+  model_2 = tf.keras.models.Sequential([
+    base_model,
+    layers.AveragePooling2D(pool_size=(7, 7)),
+    layers.Flatten(name="flatten"),
+    layers.Dense(256, activation="relu"),
+    layers.Dropout(0.5),
+    layers.Dense(128, activation="softmax"),
+    layers.Dense(2)
+  ])
+
+  model_2.compile(optimizer="Adam", loss="BinaryCrossentropy", metrics=["accuracy"])
+
+  history_2= model_2.fit(train_dataset,
+                    validation_data= val_dataset,
+                    epochs=10)
+  
+  plot_acc_loss(history_2.history, name)
+
 
 #TU ZMIEŃ ŚCIEŻKI I NAZWY NA ODPOWIEDNIE (IDK JAK SIĘ TE BAZY NAZYWAJĄ)
-train("experiments/data/baza1", "baza1_nazwa")
-train("experiments/data/baza2", "baza2_nazwa")
+#train("./data/baza1", "baza1_nazwa") 
+#train("./data/baza2", "baza2_nazwa")
+
+train_resnet101("./data/baza1", "baza1_nazwa") 
+train_resnet101("./data/baza2", "baza2_nazwa")
