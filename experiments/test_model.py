@@ -18,7 +18,7 @@ def plot_acc_loss(history, name):
 
 def loadDatasets(database_folder, name):
   batch_size = 3
-  img_size = (512, 512)
+  img_size = (256, 256)
   seed = 123
   validation_split = 0.2
   num_classes = 2
@@ -48,18 +48,15 @@ def loadDatasets(database_folder, name):
   return train_dataset, val_dataset
 
 def train(dataset_folder, name):
-  # Odpowiednio zmienić ścieżki do folderu z bazą
-  database_folder = "./data/baza1"
-  train_dataset, val_dataset = loadDatasets(database_folder, name)
+  train_dataset, val_dataset = loadDatasets(dataset_folder, name)
 
   base_model = applications.VGG16(
       include_top=False,
       weights="imagenet",
       input_tensor=None,
-      input_shape=(512,512,3),
+      input_shape=(256,256,3),
       pooling=None,
-      classes=1000,
-      classifier_activation="softmax",
+      classes=2,
   )
 
   base_model.trainable = False
@@ -69,8 +66,8 @@ def train(dataset_folder, name):
       base_model,
       layers.GlobalAveragePooling2D(),
       layers.Dropout(0.2),
-      layers.Dense(128, activation = 'softmax'),
-      layers.Dense(2),
+      layers.Dense(128, activation = 'sigmoid'),
+      layers.Dense(1),
     ]
   )
 
@@ -89,10 +86,9 @@ def train_resnet101(database_folder, name):
       include_top=False,
       weights="imagenet",
       input_tensor=None,
-      input_shape=(512,512,3),
+      input_shape=(256,256,3),
       pooling=None,
-      classes=1000,
-      classifier_activation="softmax",
+      classes=2,
   )
 
   base_model.trainable = False
@@ -103,8 +99,8 @@ def train_resnet101(database_folder, name):
     layers.Flatten(name="flatten"),
     layers.Dense(256, activation="relu"),
     layers.Dropout(0.5),
-    layers.Dense(128, activation="softmax"),
-    layers.Dense(2)
+    layers.Dense(128, activation="sigmoid"),
+    layers.Dense(1)
   ])
 
   model_2.compile(optimizer="Adam", loss="BinaryCrossentropy", metrics=["accuracy"])
@@ -120,5 +116,5 @@ def train_resnet101(database_folder, name):
 #train("./data/baza1", "baza1_nazwa") 
 #train("./data/baza2", "baza2_nazwa")
 
-train_resnet101("./data/baza1", "baza1_nazwa") 
-train_resnet101("./data/baza2", "baza2_nazwa")
+train_resnet101("F:\\split", "split") 
+train("F:\\dataset", "dataset")
