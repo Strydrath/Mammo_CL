@@ -22,26 +22,28 @@ def loadDatasets(database_folder, name):
   seed = 123
   validation_split = 0.2
   num_classes = 2
-  train_dataset = tf.keras.utils.image_dataset_from_directory(
-      database_folder,
-      labels='inferred',
-      label_mode='int',
-      image_size=img_size,
-      batch_size=batch_size,
-      seed=seed,
-      validation_split=validation_split,
-      subset='training'
+
+  data_generator = tf.keras.preprocessing.image.ImageDataGenerator(
+      rescale=1./255,  # Scale pixel values to the range [0, 1]
+      validation_split=validation_split
   )
 
-  val_dataset = tf.keras.utils.image_dataset_from_directory(
+  train_dataset = data_generator.flow_from_directory(
       database_folder,
-      labels='inferred',
-      label_mode='int',
-      image_size=img_size,
+      target_size=img_size,
       batch_size=batch_size,
       seed=seed,
-      validation_split=validation_split,
-      subset='validation'
+      subset='training',
+      class_mode="binary"
+  )
+
+  val_dataset = data_generator.flow_from_directory(
+      database_folder,
+      target_size=img_size,
+      batch_size=batch_size,
+      seed=seed,
+      subset='validation',
+      class_mode="binary"
   )
   return train_dataset, val_dataset
 
