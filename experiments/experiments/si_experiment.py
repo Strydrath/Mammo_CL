@@ -25,7 +25,7 @@ def si_experiment(model, train_set, test_set, val_set, device, name_of_experimen
     torch.cuda.empty_cache()
 
     my_logger = TensorboardLogger(
-        tb_log_dir="logs/si"+name_of_experiment
+        tb_log_dir="logs/si/"+name_of_experiment
     )
     interactive_logger = InteractiveLogger()
     evaluation_plugin = EvaluationPlugin(
