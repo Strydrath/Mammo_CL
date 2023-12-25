@@ -50,5 +50,5 @@ def si_experiment(model, train_set, test_set, val_set, device, name_of_experimen
         plugins=[EarlyStoppingPlugin(patience=2,val_stream_name= "val_stream", metric_name="Top1_Acc_Exp")]
     )
 
-    trainer = Trainer(model, train_set, test_set, val_set, device)
+    trainer = Trainer(model, train_set, test_set, val_set, device, "si/"+name_of_experiment)
     results = trainer.train(cl_strategy)

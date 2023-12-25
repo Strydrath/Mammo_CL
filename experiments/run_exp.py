@@ -26,7 +26,7 @@ model = TorchCNN()
 #model = BetterCNN(num_classes)
 #model = VGGClassifier(num_classes)
 
-name_of_experiment = "CNN_EWC"
+name_of_experiment = "Small_CNN"
 #ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
 si_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
 #naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
