@@ -24,14 +24,14 @@ from avalanche.evaluation.metrics import (
 )
 import torch.nn as nn
 
-def ewc_experiment(model, train_set, test_set, val_set, device):
+def ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment):
     torch.cuda.empty_cache()
 
 
 
 
     my_logger = TensorboardLogger(
-        tb_log_dir="logs_example_EWC"
+        tb_log_dir="logs/ewc/"+name_of_experiment
     )
 
     interactive_logger = InteractiveLogger()

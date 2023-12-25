@@ -21,11 +21,11 @@ from avalanche.evaluation.metrics import (
 )
 import torch.nn as nn
 
-def si_experiment(model, train_set, test_set, val_set, device):
+def si_experiment(model, train_set, test_set, val_set, device, name_of_experiment):
     torch.cuda.empty_cache()
 
     my_logger = TensorboardLogger(
-        tb_log_dir="logs_example_EWC"
+        tb_log_dir="logs/si"+name_of_experiment
     )
     interactive_logger = InteractiveLogger()
     evaluation_plugin = EvaluationPlugin(
