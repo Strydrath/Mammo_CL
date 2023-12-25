@@ -56,6 +56,7 @@ from avalanche.benchmarks.utils.data import AvalancheDataset
 def di_benchmark(
     train_dataset: Union[Sequence[SupportedDataset], SupportedDataset],
     test_dataset: Union[Sequence[SupportedDataset], SupportedDataset],
+    val_dataset: Union[Sequence[SupportedDataset], SupportedDataset],
     n_experiences: int,
     *,
     task_labels: bool = False,
@@ -79,8 +80,13 @@ def di_benchmark(
                 "If a list is passed for train_dataset, "
                 "then test_dataset must be a list, too."
             )
+        if not isinstance(val_dataset, (list, tuple)):
+            raise ValueError(
+                "If a list is passed for train_dataset, "
+                "then val_dataset must be a list, too."
+            )
 
-        if len(train_dataset) != len(test_dataset):
+        if len(train_dataset) != len(test_dataset) or len(train_dataset) != len(val_dataset):
             raise ValueError(
                 "Train/test dataset lists must contain the "
                 "exact same number of datasets"
@@ -88,6 +94,8 @@ def di_benchmark(
         
         exp_patterns = [[] for _ in range(n_experiences)]
         exp_patterns_test = [[] for _ in range(n_experiences)]
+        exp_patterns_val = [[] for _ in range(n_experiences)]
+
         last_id = 0
         for i,dataset in enumerate(train_dataset):
             exp_patterns[i].extend(list(range(last_id,last_id+len(dataset))))
@@ -97,18 +105,27 @@ def di_benchmark(
             exp_patterns_test[i].extend(list(range(last_id,last_id+len(dataset))))
             last_id += len(dataset)
 
+        last_id = 0
+        for i,dataset in enumerate(val_dataset):
+            exp_patterns_val[i].extend(list(range(last_id,last_id+len(dataset))))
+            last_id += len(dataset)
+
         train_dataset_sup = list(
             map(as_supervised_classification_dataset, train_dataset)
         )
         test_dataset_sup = list(map(as_supervised_classification_dataset, test_dataset))
+        val_dataset_sup = list(map(as_supervised_classification_dataset, val_dataset))
+
         seq_train_dataset = concat_classification_datasets(train_dataset_sup)
         seq_test_dataset = concat_classification_datasets(test_dataset_sup)
+        seq_val_dataset = concat_classification_datasets(val_dataset_sup)
     else:
         seq_train_dataset = as_supervised_classification_dataset(train_dataset)
         seq_test_dataset = as_supervised_classification_dataset(test_dataset)
+        seq_val_dataset = as_supervised_classification_dataset(val_dataset)
 
     transform_groups = dict(train=(train_transform, None), eval=(eval_transform, None))
-
+    
     # Set transformation groups
     final_train_dataset = make_classification_dataset(
         seq_train_dataset,
@@ -122,9 +139,16 @@ def di_benchmark(
         initial_transform_group="eval",
     )
 
+    final_val_dataset = make_classification_dataset(
+        seq_val_dataset,
+        transform_groups=transform_groups,
+        initial_transform_group="eval",
+    )
+
     return DIScenario(
         train_dataset=final_train_dataset,
         test_dataset=final_test_dataset,
+        val_dataset=final_val_dataset,
         n_experiences=n_experiences,
         task_labels=task_labels,
         shuffle=shuffle,
@@ -133,6 +157,7 @@ def di_benchmark(
         min_class_patterns_in_exp=min_class_patterns_in_exp,
         fixed_exp_assignment=exp_patterns,
         fixed_exp_assignment_test=exp_patterns_test,
+        fixed_exp_assignment_val=exp_patterns_val,
         reproducibility_data=reproducibility_data,
     )
 

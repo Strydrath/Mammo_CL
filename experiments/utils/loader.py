@@ -26,6 +26,7 @@ def get_datasets(path_to_data, train_ratio=0.8, batch_size=32):
     
     # Split dataset into training and testing sets
     num_train = int(len(dataset) * train_ratio)
-    num_test = len(dataset) - num_train
-    train_set, test_set = random_split(dataset, [num_train, num_test])
-    return train_set, test_set
+    num_test = int((len(dataset) - num_train)/2)
+    num_val = len(dataset) - num_train - num_test
+    train_set, test_set, val_set = random_split(dataset, [num_train, num_test, num_val])
+    return train_set, test_set, val_set
