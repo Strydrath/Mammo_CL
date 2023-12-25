@@ -39,10 +39,11 @@ evaluation_plugin = EvaluationPlugin(
 
 
 class Trainer:
-    def __init__(self, model,  train_set, test_set, device):
+    def __init__(self, model,  train_set, test_set, val_set, device):
         self.model = model
         self.train_set = train_set
         self.test_set = test_set
+        self.val_set = val_set
         self.device = device
 
     def train(self, strategy, callbacks=None):
@@ -54,7 +55,7 @@ class Trainer:
             [ transforms.Normalize((0.1307,), (0.3081,))]
         )   
         scenario = di_benchmark(
-            self.train_set, self.test_set, n_experiences=len(self.train_set), task_labels=True,train_transform=train_transform, eval_transform=test_transform
+            self.train_set, self.test_set, self.val_set, n_experiences=len(self.train_set), task_labels=True,train_transform=train_transform, eval_transform=test_transform
         )
         print("Starting experiment...")
         #print(scenario.classes_in_experience)
@@ -65,20 +66,19 @@ class Trainer:
         print("Starting experiment...")
         results = []
         x= scenario.test_stream[0].dataset
-        from tqdm import tqdm
-        for i, data in enumerate(tqdm(scenario.test_stream[0].dataset)):
-            print(data)
-            print("\nNumber of examples:", i + 1)
+        print("Computing accuracy on the whole test set")
+        cl_strategy.eval(scenario.test_stream)
+        i = 0
+        for experience in scenario.train_stream:
+            print("Start of experience: ", experience.current_experience)
+            print("Number of examples in the test set: ", len(experience.dataset))
 
-            for experience in scenario.train_stream:
-                print("Start of experience: ", experience.current_experience)
-                print("Current Classes: ", experience.classes_in_this_experience)
-
-                cl_strategy.train(experience)
-                print("Training completed")
-                cl_strategy.eval(scenario.test_stream)
-                print("Computing accuracy on the whole test set")
-                results.append(scenario.test_stream[0])
+            cl_strategy.train(experience, eval_streams=[scenario.val_stream[i]])
+            print("Training completed")
+            cl_strategy.eval(scenario.test_stream)
+            print("Computing accuracy on the whole test set")
+            results.append(scenario.test_stream[0])
+            i += 1
         return results
 
 
