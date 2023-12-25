@@ -39,12 +39,13 @@ evaluation_plugin = EvaluationPlugin(
 
 
 class Trainer:
-    def __init__(self, model,  train_set, test_set, val_set, device):
+    def __init__(self, model,  train_set, test_set, val_set, device, name_of_experiment):
         self.model = model
         self.train_set = train_set
         self.test_set = test_set
         self.val_set = val_set
         self.device = device
+        self.name_of_experiment = name_of_experiment
 
     def train(self, strategy, callbacks=None):
         
@@ -79,6 +80,7 @@ class Trainer:
             print("Computing accuracy on the whole test set")
             results.append(scenario.test_stream[0])
             i += 1
+        torch.save(cl_strategy.model.state_dict(), "saved_models/"+self.name_of_experiment)  
         return results
 
 
