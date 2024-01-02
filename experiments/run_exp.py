@@ -7,6 +7,7 @@ from models.TorchCNN import TorchCNN
 from experiments.ewc_experiment import ewc_experiment
 from experiments.si_experiment import si_experiment
 from experiments.naive_experiment import naive_experiment
+import torch
 print("Collecting datasets")
 
 train1, test1, val1 = get_datasets("C:/Projekt/Vindr/Vindr")
@@ -22,11 +23,37 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 input_shape = (512, 512)
 num_classes = 2
 
-model = TorchCNN()
-#model = BetterCNN(num_classes)
-#model = VGGClassifier(num_classes)
+import torch.nn as nn
+import torchvision.models as models
 
-name_of_experiment = "Small_CNN"
-#ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
+class ResNet(nn.Module):
+    def __init__(self, num_classes):
+        super(ResNet, self).__init__()
+        self.resnet50 = models.resnet50(weights='DEFAULT')
+        self.resnet50.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.num_features = self.resnet50.fc.in_features
+        self.resnet50.fc = nn.Sequential(
+            nn.Linear(self.num_features, 16),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.Dropout(p=0.6),
+            nn.Linear(16, num_classes)
+        )
+        
+    def forward(self, x):
+        return self.resnet50(x)
+
+model = ResNet(num_classes)
+#model = VGGClassifier(num_classes)
+name_of_experiment = "ResNet"
+ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
+
+model = ResNet(num_classes)
+#model = VGGClassifier(num_classes)
+name_of_experiment = "ResNet"
 si_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
-#naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
+
+model = ResNet(num_classes)
+#model = VGGClassifier(num_classes)
+name_of_experiment = "ResNet"
+naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
