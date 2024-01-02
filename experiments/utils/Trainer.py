@@ -70,6 +70,7 @@ class Trainer:
         print("Computing accuracy on the whole test set")
         cl_strategy.eval(scenario.test_stream)
         i = 0
+        
         for experience in scenario.train_stream:
             print("Start of experience: ", experience.current_experience)
             print("Number of examples in the test set: ", len(experience.dataset))
@@ -80,7 +81,8 @@ class Trainer:
             print("Computing accuracy on the whole test set")
             results.append(scenario.test_stream[0])
             i += 1
-        torch.save(cl_strategy.model.state_dict(), "saved_models/"+self.name_of_experiment)  
+        
+        torch.save(cl_strategy.model, "saved_models/"+self.name_of_experiment+".pth")
         return results
 
 
