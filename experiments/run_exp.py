@@ -7,6 +7,7 @@ from models.TorchCNN import TorchCNN
 from experiments.ewc_experiment import ewc_experiment
 from experiments.si_experiment import si_experiment
 from experiments.naive_experiment import naive_experiment
+from models.ResNet50 import ResNet50
 import torch
 print("Collecting datasets")
 
@@ -18,42 +19,23 @@ train_set = [train1, train2, train3]
 test_set = [test1, test2, train3]
 val_set = [val1, val2, val3]
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 input_shape = (512, 512)
 num_classes = 2
 
-import torch.nn as nn
-import torchvision.models as models
 
-class ResNet(nn.Module):
-    def __init__(self, num_classes):
-        super(ResNet, self).__init__()
-        self.resnet50 = models.resnet50(weights='DEFAULT')
-        self.resnet50.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
-        self.num_features = self.resnet50.fc.in_features
-        self.resnet50.fc = nn.Sequential(
-            nn.Linear(self.num_features, 16),
-            nn.BatchNorm1d(16),
-            nn.ReLU(),
-            nn.Dropout(p=0.6),
-            nn.Linear(16, num_classes)
-        )
-        
-    def forward(self, x):
-        return self.resnet50(x)
-
-model = ResNet(num_classes)
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+model = ResNet50(num_classes)
+#model = BetterCNN(num_classes)
 #model = VGGClassifier(num_classes)
-name_of_experiment = "ResNet"
+name_of_experiment = "ResNet50"
 ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
 
-model = ResNet(num_classes)
+model = ResNet50(num_classes)
 #model = VGGClassifier(num_classes)
-name_of_experiment = "ResNet"
+name_of_experiment = "ResNet50"
 si_experiment(model, train_set, test_set, val_set, device, name_of_experiment)
 
-model = ResNet(num_classes)
+model = ResNet50(num_classes)
 #model = VGGClassifier(num_classes)
-name_of_experiment = "ResNet"
+name_of_experiment = "ResNet50"
 naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment)

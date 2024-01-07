@@ -26,7 +26,7 @@ from avalanche.evaluation.metrics import (
 
 def naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment):
     torch.cuda.empty_cache()
-
+    model.to(device)
 
 
 
@@ -49,12 +49,12 @@ def naive_experiment(model, train_set, test_set, val_set, device, name_of_experi
         Adam(model.parameters(), lr=0.001),
         CrossEntropyLoss(),
         train_mb_size=32,
-        train_epochs=10,
+        train_epochs=20,
         eval_mb_size=32,
         device=device,
         evaluator=evaluation_plugin,
         eval_every=1,
-        plugins=[EarlyStoppingPlugin(patience=2,val_stream_name= "val_stream", metric_name="Top1_Acc_Exp")]
+        #plugins=[EarlyStoppingPlugin(patience=4,val_stream_name= "val_stream", metric_name="Loss_Exp")]
     )
 
     trainer = Trainer(model, train_set, test_set, val_set, device, "naive/"+name_of_experiment)
