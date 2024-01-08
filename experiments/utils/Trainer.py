@@ -68,6 +68,7 @@ class Trainer:
         results = []
         x= scenario.test_stream[0].dataset
         print("Computing accuracy on the whole test set")
+        print(next(cl_strategy.model.parameters()).is_cuda)
         cl_strategy.eval(scenario.test_stream)
         i = 0
         

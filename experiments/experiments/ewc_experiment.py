@@ -12,7 +12,7 @@ from torch.optim import Adam
 from models.TorchCNN import TorchCNN
 from models.BetterCNN import BetterCNN
 from avalanche.benchmarks.classic import PermutedMNIST
-from avalanche.logging import InteractiveLogger, TensorboardLogger
+from avalanche.logging import InteractiveLogger, TensorboardLogger, TextLogger
 from avalanche.training import EWC
 from utils.Trainer import Trainer
 from models.VGG import VGGClassifier
@@ -24,9 +24,9 @@ from avalanche.evaluation.metrics import (
 )
 import torch.nn as nn
 
-def ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment):
+def ewc_experiment(model, train_set, test_set, val_set, device, name_of_experiment,exp_num, epochs=20, lr=0.001, batch_size=32, ewc_lambda=0.001):
     torch.cuda.empty_cache()
-
+    model.to(device)
 
 
 
@@ -35,28 +35,43 @@ def ewc_experiment(model, train_set, test_set, val_set, device, name_of_experime
     )
 
     interactive_logger = InteractiveLogger()
+    log_file = open("logs/ewc/"+name_of_experiment+"/log"+str(exp_num)+".txt", "w")
+    log_file.write("EWC lambda: "+str(ewc_lambda)+"\n")
+    log_file.write("epochs: "+str(epochs)+"\n")
+    log_file.write("lr: "+str(lr)+"\n")
+    log_file.write("batch_size: "+str(batch_size)+"\n")
+    log_file.write("exp_num: "+str(exp_num)+"\n")
+    log_file.close()
+    log_file = open("logs/ewc/"+name_of_experiment+"/log"+str(exp_num)+".txt", "a")
+    text_logger = TextLogger(log_file)
     evaluation_plugin = EvaluationPlugin(
         accuracy_metrics(
             minibatch=True, epoch=True, experience=True, stream=True
         ),
         loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
         forgetting_metrics(experience=True),
-        loggers=[my_logger, interactive_logger],
+        loggers=[my_logger, interactive_logger, text_logger],
     )
+    print("EXP NUM: ", exp_num) 
+    print("EPOCHS: ", epochs)
+    print("LR: ", lr)
+    print("BATCH SIZE: ", batch_size)
+    print("EWC LAMBDA: ", ewc_lambda)
+    print("NAME OF EXPERIMENT: ", name_of_experiment)
     print("creating strategy object")
     cl_strategy = EWC(
         model,
-        Adam(model.parameters(), lr=0.001),
+        Adam(model.parameters(), lr=lr),
         CrossEntropyLoss(),
-        ewc_lambda=0.0001,
+        ewc_lambda=ewc_lambda,
         mode = 'separate',
         train_mb_size=32,
-        train_epochs=10,
+        train_epochs=epochs,
         eval_mb_size=32,
         device=device,
         evaluator=evaluation_plugin,
-        eval_every=1,
-        plugins=[EarlyStoppingPlugin(patience=2,val_stream_name= "val_stream", metric_name="Top1_Acc_Exp")]
+        #eval_every=1,
+        #plugins=[EarlyStoppingPlugin(patience=4,val_stream_name= "val_stream", mode="min", metric_name="Loss_Exp")]
     )
 
     trainer = Trainer(model, train_set, test_set, val_set, device, "ewc/"+name_of_experiment)
