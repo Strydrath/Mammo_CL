@@ -44,7 +44,7 @@ def si_experiment(model, train_set, test_set, val_set, device, name_of_experimen
         accuracy_metrics(epoch=True, experience=True, stream=True
         ),
         loss_metrics(epoch=True, experience=True, stream=True),
-        confusion_matrix_metrics(save_image=True, normalize="all", stream=True),
+        confusion_matrix_metrics(save_image=True, normalize="all", stream=False),
         forgetting_metrics(experience=True),
         loggers=[my_logger, interactive_logger, text_logger],
     )

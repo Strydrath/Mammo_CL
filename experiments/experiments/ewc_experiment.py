@@ -20,6 +20,7 @@ import torch
 from avalanche.evaluation.metrics import (
     forgetting_metrics,
     accuracy_metrics,
+    confusion_matrix_metrics,
     loss_metrics,
 )
 import torch.nn as nn
@@ -49,6 +50,7 @@ def ewc_experiment(model, train_set, test_set, val_set, device, name_of_experime
             minibatch=True, epoch=True, experience=True, stream=True
         ),
         loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
+        confusion_matrix_metrics(save_image=True, normalize="all", stream=False),
         forgetting_metrics(experience=True),
         loggers=[my_logger, interactive_logger, text_logger],
     )
@@ -70,7 +72,7 @@ def ewc_experiment(model, train_set, test_set, val_set, device, name_of_experime
         eval_mb_size=32,
         device=device,
         evaluator=evaluation_plugin,
-        #eval_every=1,
+        eval_every=1,
         #plugins=[EarlyStoppingPlugin(patience=4,val_stream_name= "val_stream", mode="min", metric_name="Loss_Exp")]
     )
 
