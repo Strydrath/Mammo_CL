@@ -83,7 +83,7 @@ class Trainer:
             results.append(scenario.test_stream[0])
             i += 1
         
-        torch.save(cl_strategy.model, "saved_models/"+self.name_of_experiment+".pth")
+        #torch.save(cl_strategy.model, "saved_models/"+self.name_of_experiment+".pth")
         return results
 
 
