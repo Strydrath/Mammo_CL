@@ -13,7 +13,7 @@ train3, test3, val3 = get_datasets("C:/Projekt/DDSM/DDSM")
 class exp():
     def __init__(self, train1, train2, train3, test1, test2, test3, val1, val2, val3, order, name_of_experiment):
         self.train = [train1, train2, train3]
-        self.test = [test1, test2, train3]
+        self.test = [test1, test2, test3]
         self.val = [val1, val2, val3]
         self.order = order
         self.name_of_experiment = name_of_experiment
@@ -31,7 +31,7 @@ for i in range(0, len(orders)):
     for j in range(0, len(lambdas)):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         model = ResNet50(num_classes)
-        name_of_experiment = "RESNET2/"+names[i]
+        name_of_experiment = "RESNET_NEW/"+names[i]
         experiment = exp(train1, train2, train3, test1, test2, test3, val1, val2, val3, orders[i], name_of_experiment)
         ewc_experiment(model, experiment.train_set, experiment.test_set, experiment.val_set , device, name_of_experiment, j, epochs=10, lr=0.0001, batch_size=32, ewc_lambda=lambdas[j])
 
