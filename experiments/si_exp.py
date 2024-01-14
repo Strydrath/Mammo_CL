@@ -33,7 +33,7 @@ for i in range(0, len(orders)):
         model = ResNet50(num_classes)
         name_of_experiment = "RESNET2/"+names[i]
         experiment = exp(train1, train2, train3, test1, test2, test3, val1, val2, val3, orders[i], name_of_experiment)
-        si_experiment(model, experiment.train_set, experiment.test_set, experiment.val_set , device, name_of_experiment, j, epochs=10, lr=0.0001, batch_size=32, ewc_lambda=lambdas[j])
+        si_experiment(model, experiment.train_set, experiment.test_set, experiment.val_set , device, name_of_experiment, j, epochs=10, lr=0.0001, batch_size=32, si_lambda=lambdas[j])
 
     
 
