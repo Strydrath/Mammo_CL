@@ -24,14 +24,15 @@ class exp():
 
 num_classes = 2
 
-lambdas = [0.001, 0.005, 0.001, 0.005, 0.01, 0.05,0.1,0.5]
+lambdas = [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05,0.1,0.5]
 orders = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]]
 names = ["Vindr_RSNA_DDSM", "Vindr_DDSM_RSNA", "RSNA_Vindr_DDSM", "RSNA_DDSM_Vindr", "DDSM_Vindr_RSNA", "DDSM_RSNA_Vindr"]
 for i in range(0, len(orders)):
     for j in range(0, len(lambdas)):
+        torch.cuda.empty_cache()
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         model = ResNet50(num_classes)
-        name_of_experiment = "RESNET_FRIDAY/"+names[i]
+        name_of_experiment = "RESNET_FRIDAY_2/"+names[i]+"/"+str(lambdas[j])
         experiment = exp(train1, train2, train3, test1, test2, test3, val1, val2, val3, orders[i], name_of_experiment)
         ewc_experiment(model, experiment.train_set, experiment.test_set, experiment.val_set , device, name_of_experiment, j, epochs=10, lr=0.0001, batch_size=32, ewc_lambda=lambdas[j])
 
