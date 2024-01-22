@@ -1,3 +1,8 @@
+"""
+script to parse the directories and create a csv file for each directory
+it will create a csv file for each directory with the name of the directory and the values of the forgetting measure
+"""
+
 # dir0,dir1,dir2
 # task000 log0dir0,task000 log0dir1,task000 log0dir2,
 # task000 log1dir0,task000 log1dir1,task000 log1dir2,

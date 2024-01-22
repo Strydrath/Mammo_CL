@@ -22,7 +22,27 @@ from avalanche.evaluation.metrics import (
 )
 import torch.nn as nn
 
-def si_experiment(model, train_set, test_set, val_set, device, name_of_experiment,exp_num, epochs=20, lr=0.001, batch_size=32, si_lambda=0.001):
+def si_experiment(model, train_set, test_set, val_set, device, name_of_experiment, exp_num, epochs=20, lr=0.001, batch_size=32, si_lambda=0.001):
+    """
+    Run an experiment Synaptic Intelligence strategy.
+
+    Args:
+        model (nn.Module): The neural network model.
+        train_set (Dataset): The training dataset.
+        test_set (Dataset): The testing dataset.
+        val_set (Dataset): The validation dataset.
+        device (torch.device): The device to run the experiment on.
+        name_of_experiment (str): The name of the experiment.
+        exp_num (int): The experiment number.
+        epochs (int, optional): The number of training epochs. Defaults to 20.
+        lr (float, optional): The learning rate. Defaults to 0.001.
+        batch_size (int, optional): The batch size. Defaults to 32.
+        si_lambda (float, optional): The Synaptic Intelligence lambda value. Defaults to 0.001.
+
+    Returns:
+        dict: The results of the experiment.
+    """
+    
     torch.cuda.empty_cache()
     model.to(device)
 
@@ -41,8 +61,7 @@ def si_experiment(model, train_set, test_set, val_set, device, name_of_experimen
     text_logger = TextLogger(log_file)
 
     evaluation_plugin = EvaluationPlugin(
-        accuracy_metrics(epoch=True, experience=True, stream=True
-        ),
+        accuracy_metrics(epoch=True, experience=True, stream=True),
         loss_metrics(epoch=True, experience=True, stream=True),
         confusion_matrix_metrics(save_image=True, normalize="all", stream=False),
         forgetting_metrics(experience=True),
@@ -61,7 +80,7 @@ def si_experiment(model, train_set, test_set, val_set, device, name_of_experimen
         model,
         Adam(model.parameters(), lr=lr),
         CrossEntropyLoss(),
-        si_lambda = si_lambda,
+        si_lambda=si_lambda,
         train_mb_size=batch_size,
         train_epochs=epochs,
         eval_mb_size=batch_size,
@@ -73,3 +92,5 @@ def si_experiment(model, train_set, test_set, val_set, device, name_of_experimen
 
     trainer = Trainer(model, train_set, test_set, val_set, device, "si/"+name_of_experiment)
     results = trainer.train(cl_strategy)
+
+    return results
