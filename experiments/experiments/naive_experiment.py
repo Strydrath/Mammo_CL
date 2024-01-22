@@ -11,7 +11,7 @@ from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
 from models.TorchCNN import TorchCNN
 from avalanche.benchmarks.classic import PermutedMNIST
-from avalanche.logging import InteractiveLogger, TensorboardLogger
+from avalanche.logging import InteractiveLogger, TensorboardLogger, TextLogger
 from avalanche.training import Naive
 from utils.Trainer import Trainer
 from avalanche.evaluation.metrics import (
@@ -24,33 +24,46 @@ from avalanche.evaluation.metrics import (
     
 )
 
-def naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment):
+def naive_experiment(model, train_set, test_set, val_set, device, name_of_experiment,exp_num, epochs=20, lr=0.001, batch_size=32):
     torch.cuda.empty_cache()
     model.to(device)
-
-
 
     my_logger = TensorboardLogger(
         tb_log_dir="logs/naive/"+name_of_experiment
     )
-
     interactive_logger = InteractiveLogger()
+    log_file = open("logs/naive/"+name_of_experiment+"/log"+str(exp_num)+".txt", "w")
+    log_file.write("epochs: "+str(epochs)+"\n")
+    log_file.write("lr: "+str(lr)+"\n")
+    log_file.write("batch_size: "+str(batch_size)+"\n")
+    log_file.write("exp_num: "+str(exp_num)+"\n")
+    log_file.close()
+    log_file = open("logs/naive/"+name_of_experiment+"/log"+str(exp_num)+".txt", "a")
+    text_logger = TextLogger(log_file)
+
     evaluation_plugin = EvaluationPlugin(
-        accuracy_metrics(
-            minibatch=True, epoch=True, experience=True, stream=True
+        accuracy_metrics(epoch=True, experience=True, stream=True
         ),
-        loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
+        loss_metrics(epoch=True, experience=True, stream=True),
+        confusion_matrix_metrics(save_image=True, normalize="all", stream=False),
         forgetting_metrics(experience=True),
-        loggers=[my_logger, interactive_logger],
+        loggers=[my_logger, interactive_logger, text_logger],
     )
+
+    print("EXP NUM: ", exp_num) 
+    print("EPOCHS: ", epochs)
+    print("LR: ", lr)
+    print("BATCH SIZE: ", batch_size)
+    print("NAME OF EXPERIMENT: ", name_of_experiment)
     print("creating strategy object")
+
     cl_strategy = Naive(
         model,
-        Adam(model.parameters(), lr=0.001),
+        Adam(model.parameters(), lr=lr),
         CrossEntropyLoss(),
-        train_mb_size=32,
-        train_epochs=20,
-        eval_mb_size=32,
+        train_mb_size=batch_size,
+        train_epochs=epochs,
+        eval_mb_size=batch_size,
         device=device,
         evaluator=evaluation_plugin,
         eval_every=1,
