@@ -23,15 +23,17 @@ def parseDirs(dname, num):
     
     logs = {}
     for subdir in subdirs:
-        files = os.listdir(f"{dname}/{subdir}")
-        for file in files:
-            if file.split(".")[-1] == "txt":
-                logno = file.split(".")[0]
-                if logno not in logs.keys():
-                    logs[logno] = []
-                readFrom = open(f"{dname}/{subdir}/{file}", 'r')
-                logs[logno].append(parseFile(readFrom,num))
-                readFrom.close()
+        subsubdirs = os.listdir(f"{dname}/{subdir}")
+        for subsubdir in subsubdirs:
+            files = os.listdir(f"{dname}/{subdir}/{subsubdir}")
+            for file in files:
+                if file.split(".")[-1] == "txt":
+                    logno = file.split(".")[0]
+                    if logno not in logs.keys():
+                        logs[logno] = []
+                    readFrom = open(f"{dname}/{subdir}/{subsubdir}/{file}", 'r')
+                    logs[logno].append(parseFile(readFrom,num))
+                    readFrom.close()
     
     if num == "000":
         for key in logs:
