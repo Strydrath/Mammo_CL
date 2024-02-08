@@ -55,7 +55,7 @@ Arguments allowed by the script:
     -hidden_size, --hidden_size: The hidden size for EWC
     -hidden_layers, --hidden_layers: The number of hidden layers for EWC
     -name, --name: The name of the experiment used for logs
-    -db_o, --db_order: The order of the datasets (V -for Vindr, R - for new_split, D - for DDSM example: "VDR")
+    -db_o, --db_order: The order of the datasets (V -for Vindr, R - for RSNA, D - for DDSM example: "VDR")
 ```
 
 2. Running specific experiment files:
