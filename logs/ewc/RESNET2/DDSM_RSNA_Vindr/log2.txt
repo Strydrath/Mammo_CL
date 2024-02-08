@@ -1,0 +1,532 @@
+EWC lambda: 0.001
+epochs: 10
+lr: 0.0001
+batch_size: 32
+exp_num: 2
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.6931
+	Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp000 = 0.5100
+-- Starting eval on experience 1 (Task 1) from test stream --
+> Eval on experience 1 (Task 1) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task001/Exp001 = 0.6931
+	Top1_Acc_Exp/eval_phase/test_stream/Task001/Exp001 = 0.5677
+-- Starting eval on experience 2 (Task 2) from test stream --
+> Eval on experience 2 (Task 2) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task002/Exp002 = 0.6931
+	Top1_Acc_Exp/eval_phase/test_stream/Task002/Exp002 = 0.7146
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/test_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024D43C1E410>
+	Loss_Stream/eval_phase/test_stream/Task002 = 0.6931
+	Top1_Acc_Stream/eval_phase/test_stream/Task002 = 0.5222
+-- >> Start of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.6931
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.5247
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E460EDC00>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.6931
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.5247
+-- Starting training on experience 0 (Task 0) from train stream --
+Epoch 0 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.5088
+	Loss_MB/train_phase/train_stream/Task000 = 0.4555
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.7495
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.6561
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.6951
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E06ADF970>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.6561
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.6951
+Epoch 1 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.4385
+	Loss_MB/train_phase/train_stream/Task000 = 0.8793
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8024
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.4651
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.8054
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E06ADD900>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.4651
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.8054
+Epoch 2 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.4199
+	Loss_MB/train_phase/train_stream/Task000 = 0.4287
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8103
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.7937
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.7057
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4AF38910>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.7937
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.7057
+Epoch 3 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3957
+	Loss_MB/train_phase/train_stream/Task000 = 0.3049
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8228
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.5207
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.7996
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E5BDF7850>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.5207
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.7996
+Epoch 4 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3862
+	Loss_MB/train_phase/train_stream/Task000 = 0.0744
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8321
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.4131
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.8248
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024C936AEC80>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.4131
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.8248
+Epoch 5 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3724
+	Loss_MB/train_phase/train_stream/Task000 = 0.1840
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8375
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.8750
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.6496
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4AFA22F0>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.8750
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.6496
+Epoch 6 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3686
+	Loss_MB/train_phase/train_stream/Task000 = 0.2010
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8425
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.4508
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.8122
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4F23F040>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.4508
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.8122
+Epoch 7 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3596
+	Loss_MB/train_phase/train_stream/Task000 = 0.5713
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8449
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.7529
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.6767
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E07F18F70>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.7529
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.6767
+Epoch 8 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3529
+	Loss_MB/train_phase/train_stream/Task000 = 1.3381
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8459
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.3776
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.8403
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4AFA0850>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.3776
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.8403
+Epoch 9 ended.
+	Loss_Epoch/train_phase/train_stream/Task000 = 0.3457
+	Loss_MB/train_phase/train_stream/Task000 = 0.3160
+	Top1_Acc_Epoch/train_phase/train_stream/Task000 = 0.8464
+	Top1_Acc_MB/train_phase/train_stream/Task000 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from val stream --
+> Eval on experience 0 (Task 0) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task000/Exp000 = 0.3735
+	Top1_Acc_Exp/eval_phase/val_stream/Task000/Exp000 = 0.8480
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024D43C1FC10>
+	Loss_Stream/eval_phase/val_stream/Task000 = 0.3735
+	Top1_Acc_Stream/eval_phase/val_stream/Task000 = 0.8480
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.3341
+	Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp000 = 0.8588
+-- Starting eval on experience 1 (Task 1) from test stream --
+> Eval on experience 1 (Task 1) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task001/Exp001 = 1.3632
+	Top1_Acc_Exp/eval_phase/test_stream/Task001/Exp001 = 0.5545
+-- Starting eval on experience 2 (Task 2) from test stream --
+> Eval on experience 2 (Task 2) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task002/Exp002 = 0.7258
+	Top1_Acc_Exp/eval_phase/test_stream/Task002/Exp002 = 0.5575
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/test_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E5BA07E20>
+	Loss_Stream/eval_phase/test_stream/Task002 = 0.3884
+	Top1_Acc_Stream/eval_phase/test_stream/Task002 = 0.8335
+-- >> Start of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 1.1796
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5888
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024DD9A15330>
+	Loss_Stream/eval_phase/val_stream/Task001 = 1.1796
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5888
+-- Starting training on experience 1 (Task 1) from train stream --
+Epoch 0 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.7029
+	Loss_MB/train_phase/train_stream/Task001 = 0.6641
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6079
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.6429
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6783
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5822
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024DD9A14A60>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.6783
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5822
+Epoch 1 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6498
+	Loss_MB/train_phase/train_stream/Task001 = 0.6388
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6322
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.6786
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6730
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5724
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024D43AAA680>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.6730
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5724
+Epoch 2 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6423
+	Loss_MB/train_phase/train_stream/Task001 = 0.5956
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6371
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6652
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6118
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E5910D2D0>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.6652
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.6118
+Epoch 3 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6429
+	Loss_MB/train_phase/train_stream/Task001 = 0.6911
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6446
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.6071
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.7030
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5592
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024DD04A7FD0>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.7030
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5592
+Epoch 4 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6344
+	Loss_MB/train_phase/train_stream/Task001 = 0.6981
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6573
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.7045
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6118
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024D43C27EE0>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.7045
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.6118
+Epoch 5 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6254
+	Loss_MB/train_phase/train_stream/Task001 = 0.6195
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6619
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.7124
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5691
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E49046BC0>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.7124
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5691
+Epoch 6 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6093
+	Loss_MB/train_phase/train_stream/Task001 = 0.5121
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6742
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.7179
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5691
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4F818550>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.7179
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5691
+Epoch 7 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.6106
+	Loss_MB/train_phase/train_stream/Task001 = 0.5686
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.6709
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.7857
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.7048
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6053
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024DD9A17EE0>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.7048
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.6053
+Epoch 8 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.5875
+	Loss_MB/train_phase/train_stream/Task001 = 0.6208
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.7010
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.9957
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.6118
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E07979C90>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.9957
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.6118
+Epoch 9 ended.
+	Loss_Epoch/train_phase/train_stream/Task001 = 0.5558
+	Loss_MB/train_phase/train_stream/Task001 = 0.5370
+	Top1_Acc_Epoch/train_phase/train_stream/Task001 = 0.7187
+	Top1_Acc_MB/train_phase/train_stream/Task001 = 0.7143
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 (Task 1) from val stream --
+> Eval on experience 1 (Task 1) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task001/Exp001 = 0.7486
+	Top1_Acc_Exp/eval_phase/val_stream/Task001/Exp001 = 0.5296
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E55097B20>
+	Loss_Stream/eval_phase/val_stream/Task001 = 0.7486
+	Top1_Acc_Stream/eval_phase/val_stream/Task001 = 0.5296
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	ExperienceForgetting/eval_phase/test_stream/Task000/Exp000 = 0.3332
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.7743
+	Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp000 = 0.5257
+-- Starting eval on experience 1 (Task 1) from test stream --
+> Eval on experience 1 (Task 1) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task001/Exp001 = 0.7195
+	Top1_Acc_Exp/eval_phase/test_stream/Task001/Exp001 = 0.5842
+-- Starting eval on experience 2 (Task 2) from test stream --
+> Eval on experience 2 (Task 2) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task002/Exp002 = 0.6286
+	Top1_Acc_Exp/eval_phase/test_stream/Task002/Exp002 = 0.6991
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/test_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4F1C2E90>
+	Loss_Stream/eval_phase/test_stream/Task002 = 0.7651
+	Top1_Acc_Stream/eval_phase/test_stream/Task002 = 0.5363
+-- >> Start of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6181
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7152
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E434C01C0>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.6181
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.7152
+-- Starting training on experience 2 (Task 2) from train stream --
+Epoch 0 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.6033
+	Loss_MB/train_phase/train_stream/Task002 = 0.3088
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7036
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6277
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7086
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E434C0CD0>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.6277
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.7086
+Epoch 1 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.5764
+	Loss_MB/train_phase/train_stream/Task002 = 0.5659
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7160
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6690
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7108
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4FF6C940>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.6690
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.7108
+Epoch 2 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.5567
+	Loss_MB/train_phase/train_stream/Task002 = 0.9680
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7251
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 0.2500
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6299
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6468
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E573E8B80>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.6299
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.6468
+Epoch 3 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.5430
+	Loss_MB/train_phase/train_stream/Task002 = 0.6553
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7329
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6497
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6490
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E50175C00>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.6497
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.6490
+Epoch 4 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.5170
+	Loss_MB/train_phase/train_stream/Task002 = 0.6917
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7500
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7504
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.5982
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024D44CFEE00>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.7504
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.5982
+Epoch 5 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.4882
+	Loss_MB/train_phase/train_stream/Task002 = 0.5973
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7691
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6887
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7174
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024D44E4D6F0>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.6887
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.7174
+Epoch 6 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.4599
+	Loss_MB/train_phase/train_stream/Task002 = 0.6215
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.7843
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 0.7500
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7650
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7461
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E07EBECE0>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.7650
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.7461
+Epoch 7 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.3842
+	Loss_MB/train_phase/train_stream/Task002 = 0.0891
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.8240
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7124
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.7064
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E073F7EE0>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.7124
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.7064
+Epoch 8 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.3131
+	Loss_MB/train_phase/train_stream/Task002 = 0.1172
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.8666
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 0.8667
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6071
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E4611EF50>
+	Loss_Stream/eval_phase/val_stream/Task002 = 0.8667
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.6071
+Epoch 9 ended.
+	Loss_Epoch/train_phase/train_stream/Task002 = 0.2239
+	Loss_MB/train_phase/train_stream/Task002 = 0.0835
+	Top1_Acc_Epoch/train_phase/train_stream/Task002 = 0.9050
+	Top1_Acc_MB/train_phase/train_stream/Task002 = 1.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 (Task 2) from val stream --
+> Eval on experience 2 (Task 2) from val stream ended.
+	Loss_Exp/eval_phase/val_stream/Task002/Exp002 = 1.1858
+	Top1_Acc_Exp/eval_phase/val_stream/Task002/Exp002 = 0.6689
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/val_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E5BD8EB30>
+	Loss_Stream/eval_phase/val_stream/Task002 = 1.1858
+	Top1_Acc_Stream/eval_phase/val_stream/Task002 = 0.6689
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 (Task 0) from test stream --
+> Eval on experience 0 (Task 0) from test stream ended.
+	ExperienceForgetting/eval_phase/test_stream/Task000/Exp000 = 0.2492
+	Loss_Exp/eval_phase/test_stream/Task000/Exp000 = 0.9709
+	Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp000 = 0.6097
+-- Starting eval on experience 1 (Task 1) from test stream --
+> Eval on experience 1 (Task 1) from test stream ended.
+	ExperienceForgetting/eval_phase/test_stream/Task001/Exp001 = 0.0759
+	Loss_Exp/eval_phase/test_stream/Task001/Exp001 = 2.6683
+	Top1_Acc_Exp/eval_phase/test_stream/Task001/Exp001 = 0.5083
+-- Starting eval on experience 2 (Task 2) from test stream --
+> Eval on experience 2 (Task 2) from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Task002/Exp002 = 1.1971
+	Top1_Acc_Exp/eval_phase/test_stream/Task002/Exp002 = 0.6173
+-- >> End of eval phase << --
+	ConfusionMatrix_Stream/eval_phase/test_stream = <avalanche.evaluation.metric_results.AlternativeValues object at 0x0000024E074157E0>
+	Loss_Stream/eval_phase/test_stream/Task002 = 1.0393
+	Top1_Acc_Stream/eval_phase/test_stream/Task002 = 0.6067
