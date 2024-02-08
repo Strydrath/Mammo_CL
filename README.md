@@ -1,4 +1,4 @@
-# Project Name
+# Continual learning in the problem of classifying breast mammographic images
 
 Code for the Project created in 2023/2024 on Gdansk University of Technology, Department of Biomedical Engineering under supervision of Jacek Ruminski PhD.
 
@@ -7,6 +7,8 @@ Datasets used for this project are Mammography scans from 3 databases: Vindr, DD
 
 Project uses Avalanche library and provides implementation of avalanche classes for DOmain Incremental Continual Learning.
 Logs are created as txt files as well as tensorboard ones.
+
+Code is documented in comments of each file
 
 ## Table of Contents
 
