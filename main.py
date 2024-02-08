@@ -2,16 +2,15 @@ from avalanche.training.supervised.strategy_wrappers import SynapticIntelligence
 from avalanche.training import EWC
 from avalanche.training.plugins import EvaluationPlugin
 from avalanche.logging import InteractiveLogger, TensorboardLogger
-from Trainer import Trainer
-from loader import get_datasets
+from experiments.utils.Trainer import Trainer
+from experiments.utils.loader import get_datasets
 import argparse
 from avalanche.training.utils import adapt_classification_layer
 from torch.optim import Adam
 from torch.nn import CrossEntropyLoss
-from models.TorchCNN import TorchCNN
+from experiments.models.TorchCNN import TorchCNN
 import torch
-from loader import get_datasets
-from utils import create_default_args
+from experiments.utils.utils import create_default_args, exp
 from avalanche.evaluation.metrics import (
     forgetting_metrics,
     accuracy_metrics,
@@ -19,6 +18,16 @@ from avalanche.evaluation.metrics import (
 )
 
 def parseOptimizer(model, optimizer):
+    """
+    Parses the optimizer string and returns the corresponding optimizer object.
+
+    Args:
+        model (torch.nn.Module): The model to optimize.
+        optimizer (str): The optimizer string.
+
+    Returns:
+        torch.optim.Optimizer or None: The optimizer object or None if the optimizer string is not recognized.
+    """
     match optimizer:
         case "Adam":
             return Adam(model.parameters(), lr=0.001)
@@ -26,6 +35,15 @@ def parseOptimizer(model, optimizer):
             return None
 
 def parseLossFunction(loss_function):
+    """
+    Parses the loss function string and returns the corresponding loss function object.
+
+    Args:
+        loss_function (str): The loss function string.
+
+    Returns:
+        torch.nn.Module or None: The loss function object or None if the loss function string is not recognized.
+    """
     match loss_function:
         case "CrossEntropyLoss":
             return CrossEntropyLoss()
@@ -33,13 +51,26 @@ def parseLossFunction(loss_function):
             return None
 
 def createStrategyArgs(strategy, overrideArgs):
+    """
+    Creates the default strategy arguments based on the given strategy string and overrides them with the provided arguments.
+
+    Args:
+        strategy (str): The strategy string.
+        overrideArgs (dict): The dictionary of arguments to override the default arguments.
+
+    Returns:
+        dict: The strategy arguments.
+    """
     match strategy:
         case "NAIVE":
             return create_default_args({'cuda': 0, 
                                         'epochs': 10, 
                                         'learning_rate': 0.001, 
                                         'train_mb_size': 256, 
-                                        'seed': None},
+                                        'seed': None,
+                                        'db_order': 'VDR',
+                                        'name': 'NAIVE_EXP'
+                                        },
                                         overrideArgs)
         case "SI":
             return create_default_args({'cuda': 0, 
@@ -48,7 +79,10 @@ def createStrategyArgs(strategy, overrideArgs):
                                         'epochs': 10,
                                         'learning_rate': 0.001, 
                                         'train_mb_size': 256, 
-                                        'seed': None},
+                                        'seed': None,
+                                        'db_order': 'VDRS',
+                                        'name': 'SI_EXP'
+                                        },
                                         overrideArgs)    
         case "EWC":
             return create_default_args({'cuda': 0, 
@@ -61,7 +95,9 @@ def createStrategyArgs(strategy, overrideArgs):
                                         'ewc_decay': None,
                                         'learning_rate': 0.001, 
                                         'train_mb_size': 256,
-                                        'seed': None},
+                                        'seed': None,
+                                        'db_order': 'VDR',
+                                        'name': 'NAIVE_EXP'},
                                         overrideArgs)
         case _:
             return create_default_args({'cuda': 0, 
@@ -72,6 +108,12 @@ def createStrategyArgs(strategy, overrideArgs):
                                         )
 
 def createParser():
+    """
+    Creates the argument parser for the program.
+
+    Returns:
+        argparse.ArgumentParser: The argument parser.
+    """
     parser = argparse.ArgumentParser(description='Command line arguments for the program')
     parser.add_argument('-s', '--strategy', type=str, help='The strategy to use')
     parser.add_argument('-o', '--optimizer', type=str, help='The optimizer to use')
@@ -89,11 +131,47 @@ def createParser():
     parser.add_argument('-seed', '--seed', type=int, help='The seed to use')
     parser.add_argument('-hidden_size', '--hidden_size', type=int, help='The hidden size for EWC')
     parser.add_argument('-hidden_layers', '--hidden_layers', type=int, help='The number of hidden layers for EWC')
+    parser.add_argument('-name', '--name', type=str, help='The name of the experiment')
+    parser.add_argument('-db_o', '--db_order', type=str, help='The order of the datasets')
     return parser
 
+"""
+Arguments allowed by the program:
+    -s, --strategy: The strategy to use
+    -o, --optimizer: The optimizer to use
+    -l, --loss: The loss function to use
+    -e, --epochs: The number of epochs to train for
+    -lr, --learning_rate: The learning rate to use
+    -tms, --train_mb_size: The training minibatch size
+    -ems, --eval_mb_size: The evaluation minibatch size
+    -si_lambda, --si_lambda: The lambda value for SI
+    -si_eps, --si_eps: The epsilon value for SI
+    -ewc_lambda, --ewc_lambda: The lambda value for EWC
+    -ewc_mode, --ewc_mode: The mode for EWC
+    -ewc_decay, --ewc_decay: The decay factor for EWC
+    -dropout, --dropout: The dropout value for EWC
+    -seed, --seed: The seed to use
+    -hidden_size, --hidden_size: The hidden size for EWC
+    -hidden_layers, --hidden_layers: The number of hidden layers for EWC
+    -name, --name: The name of the experiment used for logs
+    -db_o, --db_order: The order of the datasets (V -for Vindr, R - for new_split, D - for DDSM example: "VDR")
+"""
 
+def parseStrategy(strategy, device, model, optimizer, loss_function, args):
+    """
+    Parses the strategy string and returns the corresponding strategy object.
 
-def parseStrategy(strategy,device, model, optimizer, loss_function, args):
+    Args:
+        strategy (str): The strategy string.
+        device (torch.device): The device to use for training.
+        model (torch.nn.Module): The model to train.
+        optimizer (torch.optim.Optimizer): The optimizer to use.
+        loss_function (torch.nn.Module): The loss function to use.
+        args (argparse.Namespace): The parsed command line arguments.
+
+    Returns:
+        avalanche.training.BaseStrategy or None: The strategy object or None if the strategy string is not recognized.
+    """
     my_logger = TensorboardLogger(
     tb_log_dir="logs_example_"+strategy
     )
@@ -135,7 +213,29 @@ def parseStrategy(strategy,device, model, optimizer, loss_function, args):
         case _:
             return None
 
+def parse_database_order(db_order):
+    match db_order:
+        case "VRD":
+            return [0,1,2]
+        case "VDR":
+            return [0,2,1]
+        case "RVD":
+            return [1,0,2]
+        case "RDV":
+            return [1,2,0]
+        case "DVR":
+            return [2,0,1]
+        case "DRV":
+            return [2,1,0]
+        case _:
+            return None
+
+
+
 def main():
+    """
+    The main function of the program.
+    """
     # Create the argument parser
     parser = createParser()
     # Parse the command line arguments
@@ -154,11 +254,12 @@ def main():
     loss_function = parseLossFunction(loss_function)
     strategy = parseStrategy(strategy, device, model, optimizer, loss_function,args)
 
-    train1, test1 = get_datasets("data/baza1")
-    train2, test2 = get_datasets("data/baza2")
-    train_set = [train1, train2]
-    test_set = [test1, test2]
-
+    train1, test1, val1 = get_datasets("C:/Projekt/Vindr/Vindr")
+    train2, test2, val2 = get_datasets("C:/Projekt/new_split")
+    train3, test3, val3 = get_datasets("C:/Projekt/DDSM/DDSM")
+    order = parse_database_order(args.db_order)
+    experimen_name = args.name
+    experiment = exp(train1, train2, train3, test1, test2, test3, val1, val2, val3, )
     trainer = Trainer(model, train_set, test_set, device)
     result = trainer.train(strategy)
     print(result)

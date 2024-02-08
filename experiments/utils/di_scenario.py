@@ -36,6 +36,7 @@ class DIScenario(
         self,
         train_dataset: ClassificationDataset,
         test_dataset: ClassificationDataset,
+        val_dataset: ClassificationDataset,
         n_experiences: int = 0,
         task_labels: bool = False,
         shuffle: bool = True,
@@ -44,12 +45,14 @@ class DIScenario(
         min_class_patterns_in_exp: int = 0,
         fixed_exp_assignment: Optional[Sequence[Sequence[int]]] = None,
         fixed_exp_assignment_test: Optional[Sequence[Sequence[int]]] = None,
+        fixed_exp_assignment_val: Optional[Sequence[Sequence[int]]] = None,
         reproducibility_data: Optional[Dict[str, Any]] = None,
     ):
 
 
         train_dataset = SupervisedClassificationDataset(train_dataset)
         test_dataset = SupervisedClassificationDataset(test_dataset)
+        val_dataset = SupervisedClassificationDataset(val_dataset)
 
         self._has_task_labels = task_labels
 
@@ -115,6 +118,18 @@ class DIScenario(
                 included_patterns.extend(exp_def)
             subset = classification_subset(test_dataset, indices=included_patterns)
 
+        lst_fixed_exp_assignment_val: Optional[List[List[int]]] = None
+        if fixed_exp_assignment_val is not None:
+            lst_fixed_exp_assignment_val = list()
+            for lst in fixed_exp_assignment_val:
+                lst_fixed_exp_assignment_val.append(list(lst))
+        
+        if lst_fixed_exp_assignment_val is not None:
+            included_patterns: List[int] = list()
+            for exp_def in lst_fixed_exp_assignment_val:
+                included_patterns.extend(exp_def)
+            subset = classification_subset(val_dataset, indices=included_patterns)
+
         for unique_idx in range(len(unique_targets)):
             class_id = int(unique_targets[unique_idx])
             class_count = int(unique_count[unique_idx])
@@ -143,8 +158,13 @@ class DIScenario(
                 assert lst_fixed_exp_assignment_test is not None
                 exp_patterns = lst_fixed_exp_assignment
                 exp_patterns_test = lst_fixed_exp_assignment_test
+                exp_patterns_val = lst_fixed_exp_assignment_val
+
                 self.exp_structure_test = _exp_structure_from_assignment(
                     test_dataset, exp_patterns_test, self.n_classes
+                )
+                self.exp_structure_val = _exp_structure_from_assignment(
+                    val_dataset, exp_patterns_val, self.n_classes
                 )
             self.exp_structure = _exp_structure_from_assignment(
                 train_dataset, exp_patterns, self.n_classes
@@ -401,6 +421,27 @@ class DIScenario(
                 )
             test_fin = test_experiences
 
+        val_fin = val_dataset
+        val_task_labels = [0]
+        if exp_patterns_val is not None:
+            val_experiences = []
+            val_task_labels = []
+            for t_id, exp_def in enumerate(exp_patterns_val):
+                if self._has_task_labels:
+                    val_task_labels.append(t_id)
+                else:
+                    val_task_labels.append(0)
+
+                exp_task_labels = ConstantSequence(
+                    val_task_labels[-1], len(val_dataset)
+                )
+                val_experiences.append(
+                    classification_subset(
+                        val_dataset, indices=exp_def, task_labels=exp_task_labels
+                    )
+                )
+            val_fin = val_experiences
+
         self.train_exps_patterns_assignment = exp_patterns
         """ A list containing which training instances are assigned to each
         experience in the train stream. Instances are identified by their id 
@@ -410,6 +451,7 @@ class DIScenario(
             stream_definitions={
                 "train": (train_experiences, train_task_labels, train_dataset),
                 "test": (test_fin, test_task_labels, test_dataset),
+                "val": (val_fin, val_task_labels, val_dataset),
             },
             complete_test_set_only=False,
             stream_factory=DIStream,
