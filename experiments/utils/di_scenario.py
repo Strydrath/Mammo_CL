@@ -55,7 +55,7 @@ class DIScenario(
         val_dataset = SupervisedClassificationDataset(val_dataset)
 
         self._has_task_labels = task_labels
-
+        self.n_classes_per_exp: Optional[List[int]] = [2,2,2]
         self.train_exps_patterns_assignment: List[List[int]] = []
 
         if reproducibility_data is not None:

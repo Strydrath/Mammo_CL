@@ -40,7 +40,7 @@ from avalanche.benchmarks.scenarios.lazy_dataset_sequence import (
     LazyDatasetSequence,
 )
 
-from utils.di_scenario import DIScenario
+from experiments.utils.di_scenario import DIScenario
 
 from avalanche.benchmarks.utils.classification_dataset import (
     SupervisedClassificationDataset,

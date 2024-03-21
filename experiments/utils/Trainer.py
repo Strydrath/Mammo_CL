@@ -6,7 +6,7 @@ from torch.nn import CrossEntropyLoss
 from torch.optim import Adam
 from torchvision import transforms
 from torchvision.transforms import ToTensor, Resize
-from utils.di_benchmark import di_benchmark
+from experiments.utils.di_benchmark import di_benchmark
 from avalanche.benchmarks import SplitCIFAR10
 from avalanche.benchmarks.generators import ni_benchmark
 from avalanche.training.utils import adapt_classification_layer
@@ -61,8 +61,7 @@ class Trainer:
         print("Starting experiment...")
         #print(scenario.classes_in_experience)
         adapt_classification_layer(self.model, scenario.n_classes, bias=False)
-
-        # CREATE THE STRATEGY INSTANCE (NAIVE with the Synaptic Intelligence plugin)
+        
         cl_strategy = strategy
         print("Starting experiment...")
         results = []

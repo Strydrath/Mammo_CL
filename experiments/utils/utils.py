@@ -1,5 +1,5 @@
 from types import SimpleNamespace
-
+import datetime
 def create_default_args(args_dict, additional_args=None):
     """
     Create a namespace object with default arguments.
@@ -11,14 +11,31 @@ def create_default_args(args_dict, additional_args=None):
     Returns:
         Namespace: A namespace object containing the default arguments and additional arguments (if provided).
     """
+    print(additional_args)
+    print(args_dict)
     args = SimpleNamespace()
     for k, v in args_dict.items():
         args.__dict__[k] = v
     if additional_args is not None:
-        result = SimpleNamespace(**vars(args), **vars(additional_args))
-        print(vars(result))
-        return result
+        # Replace all overlapping arguments with the ones from additional_args
+        for k, v in additional_args.__dict__.items():
+            if k not in args_dict.keys() or v is not None:
+                args.__dict__[k] = v
+            
+        # Add the remaining arguments from additional_args
+    
+    print(vars(args))
     return args
+
+def print_args_to_file(args, file):
+    """
+    Print arguments to a file.
+    """
+    with open(file, "w") as f:
+        f.write("Date and time:" + str(datetime.datetime.now()) + "\n\n")
+        for k, v in vars(args).items():
+            if v is not None:
+                f.write(f"{k}: {v}\n")
 
 class exp():
     """
