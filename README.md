@@ -1,86 +1,63 @@
-# Continual learning in the problem of classifying breast mammographic images
+# Continual learning for mammography classification
 
-Code for the Project created in 2023/2024 on Gdansk University of Technology, Department of Biomedical Engineering under supervision of Jacek Ruminski PhD.
+Course project from 2023/2024 at Gdańsk University of Technology, Department of Biomedical Engineering, supervised by Jacek Rumiński, PhD.
 
-Project allows user to run experiments in regard of continual learning in incremental domain setting.
-Datasets used for this project are Mammography scans from 3 databases: Vindr, DDSM and RSNA.
+The code runs domain-incremental continual-learning experiments on mammography scans from three datasets: Vindr, DDSM, and RSNA. It uses the Avalanche library, with Avalanche classes for domain-incremental learning that also apply outside this medical setting.
 
-Project uses Avalanche library and provides implementation of avalanche classes for DOmain Incremental Continual Learning.
-Logs are created as txt files as well as tensorboard ones.
-
-Code is documented in comments of each file
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
+Logs are written as text files and as TensorBoard event files. The `logs/` directory holds the runs from this project, and those event files are why the repository is large.
 
 ## Installation
 
-Project requires Python version 3.10.2.
-All required dependencies can be installed using pip command:
-```
+Python 3.10.2.
+
+```bash
 pip install -r requirements.txt
 ```
-No further installation is needed.
 
 ## Usage
 
-Project 
-1. Using the command line arguments:
+Run one experiment from the command line:
 
-Run the main file with command line arguments to run specific experiments.
-
-
-
-Example: python main.py --experiment experiment_name
-
-Arguments allowed by the script:
-```
-    -s, --strategy: The strategy to use
-    -o, --optimizer: The optimizer to use
-    -l, --loss: The loss function to use
-    -e, --epochs: The number of epochs to train for
-    -lr, --learning_rate: The learning rate to use
-    -tms, --train_mb_size: The training minibatch size
-    -ems, --eval_mb_size: The evaluation minibatch size
-    -si_lambda, --si_lambda: The lambda value for SI
-    -si_eps, --si_eps: The epsilon value for SI
-    -ewc_lambda, --ewc_lambda: The lambda value for EWC
-    -ewc_mode, --ewc_mode: The mode for EWC
-    -ewc_decay, --ewc_decay: The decay factor for EWC
-    -dropout, --dropout: The dropout value for EWC
-    -seed, --seed: The seed to use
-    -hidden_size, --hidden_size: The hidden size for EWC
-    -hidden_layers, --hidden_layers: The number of hidden layers for EWC
-    -name, --name: The name of the experiment used for logs
-    -db_o, --db_order: The order of the datasets (V -for Vindr, R - for RSNA, D - for DDSM example: "VDR")
+```bash
+python main.py --strategy STRATEGY --name experiment_name
 ```
 
-2. Running specific experiment files:
+Or run a batch with `experiments/ewc_exp.py`, `experiments/naive_exp.py`, or `experiments/si_exp.py`.
 
-Run one of the following files: ewc_exp.py, naive_exp.py, or si_exp.py to run a whole batch of experiments.
-## Features
+### Arguments
 
-Project contains 3 main parts:
-* `/preprocessing` - code used to process *.dicom files into *.jpg files. 
-* `/experiments` - code allowing for running Continual Learning experiments
-especially `/experiments/utils` - files extanding Avalanche classes allowing for Domain Incremental Continual Learning experiments - classes are universal and can be used for any Domain Incremental scenario - not only related to medicine.
-* `/keras_strategies` - files with keras implementation of Synaptic Intelligence, EWC and Naive strategies, not used in the rest of the project - baseline of how the strategies work.
+| Flag | Meaning |
+| --- | --- |
+| `-s`, `--strategy` | Continual-learning strategy |
+| `-o`, `--optimizer` | Optimizer |
+| `-l`, `--loss` | Loss function |
+| `-e`, `--epochs` | Number of training epochs |
+| `-lr`, `--learning_rate` | Learning rate |
+| `-tms`, `--train_mb_size` | Training minibatch size |
+| `-ems`, `--eval_mb_size` | Evaluation minibatch size |
+| `-si_lambda`, `--si_lambda` | Lambda for Synaptic Intelligence |
+| `-si_eps`, `--si_eps` | Epsilon for Synaptic Intelligence |
+| `-ewc_lambda`, `--ewc_lambda` | Lambda for EWC |
+| `-ewc_mode`, `--ewc_mode` | EWC mode |
+| `-ewc_decay`, `--ewc_decay` | EWC decay |
+| `-dropout`, `--dropout` | Dropout |
+| `-seed`, `--seed` | Random seed |
+| `-hidden_size`, `--hidden_size` | Hidden size |
+| `-hidden_layers`, `--hidden_layers` | Number of hidden layers |
+| `-name`, `--name` | Experiment name used in the logs |
+| `-db_o`, `--db_order` | Dataset order: `V` Vindr, `R` RSNA, `D` DDSM. Example: `VDR` |
 
-There are also logs generated during experiments conducted by the team - they are in the `/logs` folder.
+## Layout
 
+- `preprocessing/` converts DICOM files to JPEG.
+- `experiments/` runs the continual-learning experiments. `experiments/utils/` extends Avalanche for domain-incremental scenarios.
+- `keras_strategies/` is a separate Keras baseline for Synaptic Intelligence, EWC, and a naive strategy. The main experiments do not use it.
+- `logs/` stores logs from the experiments that were run.
 
+## Team
 
-## Contact
+- Marianna Jucewicz
+- Radosław Karkoszka
+- Aleksandra Nadzieja
 
-Team:
-* Marianna Jucewicz, s180377@student.pg.edu.pl
-* Radosław Karkoszka, s197124@student.pg.edu.pl
-* Aleksandra Nadzieja, s175237@student.pg.edu.pl
-
-Supervisor:
-Ph.D. Jacek Rumiński, jacrumin@pg.edu.pl
-
-
+Supervisor: Jacek Rumiński, PhD
